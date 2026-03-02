@@ -1,2 +1,2 @@
-# web-portfolio-template
-web projesi dersinde kullanacağınız şablonu oluşturuyorum
+# web-portfolio-hamza-kahveci
+BU SITEYI HAMZA KAHVECI YAPIYOR!!!!!!!
