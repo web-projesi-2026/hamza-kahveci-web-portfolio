@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contact me – reach out for collaborations, projects, or just to say hello." />
+  <meta name="keywords" content="contact, hire developer, collaboration, portfolio contact, email" />
+  <meta name="author" content="Your Name" />
+  <meta property="og:title" content="Contact – My Portfolio" />
+  <meta property="og:description" content="Get in touch for projects, collaborations, or questions." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yourwebsite.com/pages/contact.html" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://yourwebsite.com/pages/contact.html" />
+  <title>Contact – My Portfolio</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+
+  <div id="pageLoader" class="page-loader" aria-hidden="true">
+    <span class="loader-text">Loading</span>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <div id="cursor" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+
+  <header role="banner">
+    <nav class="navbar" aria-label="Main navigation">
+      <a href="../index.html" class="nav-logo" aria-label="Portfolio home">MY<span>.</span></a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="../index.html" class="nav-link"        data-i18n="nav.home">Main Page</a></li>
+        <li><a href="projects.html" class="nav-link"        data-i18n="nav.projects">Projects</a></li>
+        <li><a href="about.html"    class="nav-link"        data-i18n="nav.about">About Me</a></li>
+        <li><a href="contact.html"  class="nav-link active" data-i18n="nav.contact">Contact Me</a></li>
+      </ul>
+
+      <div class="lang-toggle" role="group" aria-label="Language selector">
+        <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
+        <button class="lang-btn" data-lang="tr" aria-label="Türkçe">TR</button>
+      </div>
+
+      <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation">
+    <a href="../index.html" class="nav-link" data-i18n="nav.home">Main Page</a>
+    <a href="projects.html" class="nav-link" data-i18n="nav.projects">Projects</a>
+    <a href="about.html"    class="nav-link" data-i18n="nav.about">About Me</a>
+    <a href="contact.html"  class="nav-link" data-i18n="nav.contact">Contact Me</a>
+    <div class="lang-toggle">
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="tr">TR</button>
+    </div>
+  </nav>
+
+  <main class="page-content" id="main-content">
+
+    <!-- ══ PAGE HERO ══ -->
+    <section class="hero" style="min-height:45vh;" aria-label="Contact header">
+      <div class="hero-bg"></div>
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-line" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow" data-i18n="label.contact">Get in touch</p>
+        <h1 class="hero-title glitch" data-text="CONTACT" data-i18n="title.contact">CONTACT</h1>
+        <p class="hero-subtitle" data-i18n="desc.contact">Have a project in mind or just want to say hello?</p>
+      </div>
+    </section>
+
+    <!-- ══ CONTACT CONTENT ══ -->
+    <section aria-label="Contact information and form">
+      <div class="section-inner">
+        <div class="contact-grid">
+
+          <!-- Info column -->
+          <div class="contact-info reveal">
+            <h2 class="section-title" data-i18n="title.contact">Contact</h2>
+            <p data-i18n="contact.p">
+              I'm always open to new opportunities, collaborations, or just a good conversation. Drop me a line.
+            </p>
+
+            <div class="contact-links" role="list">
+              <a href="mailto:youremail@example.com" class="contact-link" role="listitem" aria-label="Email">
+                <span class="contact-link-icon" aria-hidden="true">✉</span>
+                <span data-i18n="contact.email">youremail@example.com</span>
+              </a>
+              <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" class="contact-link" role="listitem" aria-label="GitHub">
+                <span class="contact-link-icon" aria-hidden="true">◇</span>
+                <span data-i18n="contact.github">github.com/yourusername</span>
+              </a>
+              <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" class="contact-link" role="listitem" aria-label="LinkedIn">
+                <span class="contact-link-icon" aria-hidden="true">◈</span>
+                <span data-i18n="contact.linkedin">linkedin.com/in/yourprofile</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Form column -->
+          <div class="reveal reveal-delay-2">
+            <form class="contact-form" id="contactForm" novalidate aria-label="Contact form">
+
+              <div class="form-group">
+                <label for="inputName" data-i18n="form.name">Full Name</label>
+                <input
+                  type="text"
+                  id="inputName"
+                  name="name"
+                  autocomplete="name"
+                  required
+                  data-i18n-placeholder="form.name"
+                  placeholder="Full Name"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="inputEmail" data-i18n="form.email">Email Address</label>
+                <input
+                  type="email"
+                  id="inputEmail"
+                  name="email"
+                  autocomplete="email"
+                  required
+                  data-i18n-placeholder="form.email"
+                  placeholder="Email Address"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="inputSubject" data-i18n="form.subject">Subject</label>
+                <input
+                  type="text"
+                  id="inputSubject"
+                  name="subject"
+                  required
+                  data-i18n-placeholder="form.subject"
+                  placeholder="Subject"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="inputMessage" data-i18n="form.message">Message</label>
+                <textarea
+                  id="inputMessage"
+                  name="message"
+                  required
+                  data-i18n-placeholder="form.message"
+                  placeholder="Message"
+                ></textarea>
+              </div>
+
+              <div id="formMsg" class="form-msg" role="status" aria-live="polite"></div>
+
+              <button type="submit" class="btn btn-primary pulse-red" data-i18n="form.send">
+                Send Message
+              </button>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer role="contentinfo">
+    <div class="footer-inner">
+      <span class="footer-logo">MY<span>.</span></span>
+      <p class="footer-copy" data-i18n="footer.copy">© 2025 My Portfolio. All rights reserved.</p>
+      <div class="footer-socials" aria-label="Social links">
+        <a href="#" class="footer-social" aria-label="GitHub">GH</a>
+        <a href="#" class="footer-social" aria-label="LinkedIn">LI</a>
+        <a href="#" class="footer-social" aria-label="Twitter/X">X</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/jScript.js"></script>
+</body>
+</html>
