@@ -35,8 +35,8 @@
       'title.about':    'About Me',
       'title.contact':  'Contact',
       /* Section descs */
-      'desc.skills':   'A curated set of tools and disciplines I've mastered over the years.',
-      'desc.projects': 'A selection of the work I'm most proud of.',
+      'desc.skills':   'A curated set of tools and disciplines Ive mastered over the years.',
+      'desc.projects': 'A selection of the work Im most proud of.',
       'desc.about':    'A bit about my journey, passions, and how I work.',
       'desc.contact':  'Have a project in mind or just want to say hello?',
       /* Skill cards */
