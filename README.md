@@ -9,7 +9,7 @@ Teması CSS ile düzenlenmiştir. <br>
 Bunları üretmeme yardım eden AI=Claude (Sonnet 4.6)
 
 # EKLENECEKLER/DÜZENLENECEKLER
-Template olan veriler düzenlenecek. <br>
+~~Template olan veriler düzenlenecek.~~ Yapıldı <br>
 Linkler düzenlenecek.
 
 # TEST LINKI
