@@ -1,188 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Personal portfolio – showcasing my projects, skills, and experience as a full-stack developer." />
-  <meta name="keywords" content="portfolio, developer, web development, full-stack, projects, programming" />
-  <meta name="author" content="Your Name" />
-  <meta property="og:title" content="Hamza Kahveci Portfolio – Full-Stack Developer" />
-  <meta property="og:description" content="Developer & Creative – explore my work and get in touch." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://yourwebsite.com/" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://yourwebsite.com/" />
-  <title>Hamza Kahveci Portfolio – Developer & Creative</title>
+  <title>Hamza Kahveci — Portfolio</title>
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 
-  <!-- Page Loader -->
-  <div id="pageLoader" class="page-loader" aria-hidden="true">
-    <span class="loader-text">Loading</span>
-    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
-  </div>
-
-  <!-- Custom Cursor -->
-  <div id="cursor" aria-hidden="true"></div>
-  <div id="cursor-ring" aria-hidden="true"></div>
-
-  <!-- ══ HEADER / NAV ══ -->
-  <header role="banner">
-    <nav class="navbar" aria-label="Main navigation">
-      <a href="index.html" class="nav-logo" aria-label="Portfolio home">Hamza <span>Kahveci</span></a>
-
-      <ul class="nav-links" role="list">
-        <li><a href="index.html"           class="nav-link active" data-i18n="nav.home">Main Page</a></li>
-        <li><a href="pages/projects.html"  class="nav-link"        data-i18n="nav.projects">Projects</a></li>
-        <li><a href="pages/about.html"     class="nav-link"        data-i18n="nav.about">About Me</a></li>
-        <li><a href="pages/contact.html"   class="nav-link"        data-i18n="nav.contact">Contact Me</a></li>
-      </ul>
-
-      <div class="lang-toggle" role="group" aria-label="Language selector">
-        <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
-        <button class="lang-btn" data-lang="tr" aria-label="Türkçe">TR</button>
-      </div>
-
-      <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </nav>
-  </header>
-
-  <!-- Mobile Nav -->
-  <nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation">
-    <a href="index.html"           class="nav-link" data-i18n="nav.home">Main Page</a>
-    <a href="pages/projects.html"  class="nav-link" data-i18n="nav.projects">Projects</a>
-    <a href="pages/about.html"     class="nav-link" data-i18n="nav.about">About Me</a>
-    <a href="pages/contact.html"   class="nav-link" data-i18n="nav.contact">Contact Me</a>
-    <div class="lang-toggle">
-      <button class="lang-btn" data-lang="en">EN</button>
-      <button class="lang-btn" data-lang="tr">TR</button>
-    </div>
+  <nav>
+    <a class="nav-logo" href="index.html">HK<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#hakkimda">Hakkımda</a></li>
+      <li><a href="#beceriler">Beceriler</a></li>
+      <li><a href="#hobiler">Hobiler</a></li>
+      <li><a href="pages/projects.html">Projeler</a></li>
+      <li><a href="pages/contact.html">İletişim</a></li>
+    </ul>
+    <button class="theme-toggle" id="theme-toggle">
+      <span class="dot"></span>
+      <span id="theme-label">Koyu Tema</span>
+    </button>
   </nav>
 
-  <main class="page-content" id="main-content">
-
-    <!-- ══ HERO ══ -->
-    <section class="hero" aria-label="Introduction">
-      <div class="hero-bg"></div>
-      <div class="hero-grid" aria-hidden="true"></div>
-      <div class="hero-diagonal" aria-hidden="true"></div>
-      <div class="hero-line" aria-hidden="true"></div>
-
-      <div class="hero-content">
-        <p class="hero-eyebrow" data-i18n="hero.eyebrow">Welcome to my portfolio</p>
-
-        <h1 class="hero-title glitch" data-text="DEVELOPER">
-          DEV<span class="accent" data-text="ELOPER">ELOPER</span>
-        </h1>
-
-        <p class="hero-subtitle" data-i18n="hero.sub">
-          I build <strong>modern digital experiences</strong> — clean, fast, and purposeful.
-        </p>
-
-        <div class="hero-cta">
-          <a href="pages/projects.html" class="btn btn-primary" data-i18n="hero.cta1">View Projects</a>
-          <a href="pages/contact.html"  class="btn btn-outline"  data-i18n="hero.cta2">Contact Me</a>
-        </div>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <span class="hero-tag">// Portfolyo</span>
+      <h1>
+        Hamza<br>
+        <span class="accent">Kahveci</span><span class="accent2">.</span>
+      </h1>
+      <p class="hero-desc">
+        Yazılım geliştirici & teknoloji meraklısı. Kod yazmaktan, sistemleri anlamaktan ve yeni şeyler inşa etmekten keyif alıyorum.
+      </p>
+      <div class="hero-cta">
+        <a href="pages/projects.html" class="btn btn-primary">Projeleri Gör →</a>
+        <a href="pages/contact.html" class="btn btn-outline">İletişime Geç</a>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- ══ STATS STRIP ══ -->
-    <div class="stats-strip" aria-label="Statistics">
-      <div class="stats-inner">
-        <div class="stat-item">
-          <span class="stat-number" data-count="32">0</span>
-          <span class="stat-label" data-i18n="stat.projects">Hours Slept</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" data-count="18">0</span>
-          <span class="stat-label" data-i18n="stat.clients">Times Almost Died</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" data-count="5">0</span>
-          <span class="stat-label" data-i18n="stat.years">Years Experience</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" data-count="1240">0</span>
-          <span class="stat-label" data-i18n="stat.coffees">Cigarettes Smoked</span>
-        </div>
+  <div class="divider"></div>
+
+  <!-- HAKKIMDA -->
+  <section id="hakkimda">
+    <div class="section-label fade-up">// 01</div>
+    <h2 class="section-title fade-up">Hakkımda</h2>
+
+    <div class="avatar-wrap fade-up">
+      <img src="https://avatars.githubusercontent.com/gb0u" alt="Hamza Kahveci GitHub Avatar" />
+      <div class="avatar-info">
+        <div class="name">Hamza Kahveci</div>
+        <div class="handle">@gb0u · GitHub</div>
       </div>
     </div>
 
-    <!-- ══ SKILLS ══ -->
-    <section aria-labelledby="skills-title">
-      <div class="section-inner">
-        <p class="section-label reveal" data-i18n="label.skills">What I do</p>
-        <h2 class="section-title reveal reveal-delay-1" id="skills-title" data-i18n="title.skills">Skills &amp; Services</h2>
-        <p class="section-desc reveal reveal-delay-2" data-i18n="desc.skills">
-          A curated set of tools and disciplines I've mastered over the years.
-        </p>
+    <p class="fade-up" style="color: var(--muted); max-width: 600px; margin-bottom: 1rem;">
+      Merhaba! Ben Hamza. Yazılım ve donanım dünyasına ilgi duyan, sürekli öğrenmeye açık bir geliştiriciyim.
+    </p>
+    <p class="fade-up" style="color: var(--muted); max-width: 600px;">
+      Bilişim alanında stajyerlik deneyimim var. HTML, CSS, JavaScript ve C# ile projeler geliştiriyorum. Aynı zamanda bilgisayar donanımıyla fiziksel olarak ilgilenmeyi de seviyorum.
+    </p>
+  </section>
 
-        <div class="skills-grid">
-          <article class="skill-card reveal reveal-delay-1">
-            <div class="skill-icon" aria-hidden="true">⚡</div>
-            <h3 data-i18n="skill.1.title">Frontend Dev</h3>
-            <p data-i18n="skill.1.desc">Building pixel-perfect, performant interfaces with modern frameworks.</p>
-          </article>
-          <article class="skill-card reveal reveal-delay-2">
-            <div class="skill-icon" aria-hidden="true">🛠️</div>
-            <h3 data-i18n="skill.2.title">Backend Dev</h3>
-            <p data-i18n="skill.2.desc">Scalable APIs, databases and server-side logic.</p>
-          </article>
-          <article class="skill-card reveal reveal-delay-3">
-            <div class="skill-icon" aria-hidden="true">🎨</div>
-            <h3 data-i18n="skill.3.title">UI/UX Design</h3>
-            <p data-i18n="skill.3.desc">Crafting user experiences that are intuitive and beautiful.</p>
-          </article>
-        </div>
+  <div class="divider"></div>
+
+  <!-- BECERİLER -->
+  <section id="beceriler">
+    <div class="section-label fade-up">// 02</div>
+    <h2 class="section-title fade-up">Beceriler</h2>
+    <div class="skills-grid">
+      <div class="skill-card fade-up"><span class="skill-icon">🌐</span>HTML</div>
+      <div class="skill-card fade-up"><span class="skill-icon">🎨</span>CSS</div>
+      <div class="skill-card fade-up"><span class="skill-icon">⚡</span>JavaScript</div>
+      <div class="skill-card fade-up"><span class="skill-icon">⚙️</span>C#</div>
+      <div class="skill-card fade-up"><span class="skill-icon">☕</span>Java</div>
+      <div class="skill-card fade-up"><span class="skill-icon">🗄️</span>SQLite</div>
+      <div class="skill-card fade-up"><span class="skill-icon">💻</span>Visual Studio</div>
+      <div class="skill-card fade-up"><span class="skill-icon">🖼️</span>Photoshop</div>
+      <div class="skill-card fade-up"><span class="skill-icon">🎬</span>Adobe Animate</div>
+      <div class="skill-card fade-up"><span class="skill-icon">🌍</span>İngilizce</div>
+      <div class="skill-card fade-up"><span class="skill-icon">🔧</span>Bilgi İşlem Stajı</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- HOBİLER -->
+  <section id="hobiler">
+    <div class="section-label fade-up">// 03</div>
+    <h2 class="section-title fade-up">Hobiler</h2>
+    <div class="hobbies-grid">
+      <div class="hobby-card fade-up">
+        <div class="hobby-num">01</div>
+        <div class="hobby-title">Oyun Oynamak</div>
+        <p class="hobby-desc">Dijital dünyalarda vakit geçirmeyi, strateji ve hikaye odaklı oyunları keşfetmeyi seviyorum.</p>
       </div>
-    </section>
-
-    <!-- ══ FEATURED PROJECTS TEASER ══ -->
-    <section style="padding-top:0" aria-labelledby="feat-title">
-      <div class="section-inner">
-        <p class="section-label reveal" data-i18n="label.projects">Selected work</p>
-        <h2 class="section-title reveal reveal-delay-1" id="feat-title" data-i18n="title.projects">Projects</h2>
-        <p class="section-desc reveal reveal-delay-2" data-i18n="desc.projects">
-          A selection of the work I'm most proud of.
-        </p>
-
-        <div class="projects-grid">
-          <article class="project-card reveal reveal-delay-1">
-            <span class="project-num" aria-hidden="true">01</span>
-            <span class="project-tag" data-i18n="proj.tag.web">Web App</span>
-            <h3 data-i18n="proj.1.title">This Website Itself</h3>
-            <p data-i18n="proj.1.desc">A custom made portfolio website with ease of access in mind.</p>
-            <div class="project-tech">
-              <span class="tech-badge">JavaScript</span>
-              <span class="tech-badge">HTML</span>
-              <span class="tech-badge">CSS</span>
-            </div>
-            <span class="project-arrow" aria-hidden="true">↗</span>
-          </article>
-        </div>
-
-        <div style="margin-top:2rem; text-align:center;">
-          <a href="pages/projects.html" class="btn btn-outline reveal" data-i18n="hero.cta1">View Projects</a>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ══ FOOTER ══ -->
-  <footer role="contentinfo">
-    <div class="footer-inner">
-      <span class="footer-logo">Hamza <span>Kahveci</span></span>
-      <p class="footer-copy" data-i18n="footer.copy">© 2026 Hamza Kahveci Portfolio. All rights reserved.</p>
-      <div class="footer-socials" aria-label="Social links">
-        <a href="https://www.github.com/gb0u" class="footer-social" aria-label="GitHub">GH</a>
-        <a href="#" class="footer-social" aria-label="LinkedIn">LI</a>
-        <a href="#" class="footer-social" aria-label="Twitter/X">X</a>
+      <div class="hobby-card fade-up">
+        <div class="hobby-num">02</div>
+        <div class="hobby-title">Donanım & Tamir</div>
+        <p class="hobby-desc">Bilgisayarları fiziksel olarak incelemek, parçalamak, onarmak ve yeniden bir araya getirmek benim için büyük bir zevk.</p>
       </div>
     </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <footer>
+    <p>© 2026 Hamza Kahveci — Tüm hakları saklıdır.</p>
   </footer>
 
   <script src="assets/js/jScript.js"></script>
