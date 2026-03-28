@@ -1,114 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Projects – a showcase of web apps, mobile apps, and design work by Your Name." />
-  <meta name="keywords" content="projects, portfolio, web app, mobile app, developer work" />
-  <meta name="author" content="Hamza Kahveci" />
-  <meta property="og:title" content="Projects – Hamza Kahveci Portfolio" />
-  <meta property="og:description" content="Browse through my selected works in web, mobile, and design." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://gb0u.github.io/web-portfolio-hamza-kahveci/pages/projects.html" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://gb0u.github.io/web-portfolio-hamza-kahveci/pages/projects.html" />
-  <title>Projects – Hamza Kahveci Portfolio</title>
+  <title>Projeler — Hamza Kahveci</title>
   <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2rem;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(124,109,250,0.1);
+    }
+
+    .project-card:hover::after { transform: scaleX(1); }
+
+    .project-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(124,109,250,0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+      margin-bottom: 1rem;
+    }
+
+    .project-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-desc {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-link {
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+
+    .project-link:hover { text-decoration: underline; }
+  </style>
 </head>
 <body>
 
-  <!-- Page Loader -->
-  <div id="pageLoader" class="page-loader" aria-hidden="true">
-    <span class="loader-text">Loading</span>
-    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
-  </div>
-
-  <!-- Custom Cursor -->
-  <div id="cursor" aria-hidden="true"></div>
-  <div id="cursor-ring" aria-hidden="true"></div>
-
-  <!-- ══ HEADER / NAV ══ -->
-  <header role="banner">
-    <nav class="navbar" aria-label="Main navigation">
-      <a href="../index.html" class="nav-logo" aria-label="Portfolio home">Hamza <span>Kahveci</span></a>
-
-      <ul class="nav-links" role="list">
-        <li><a href="../index.html"       class="nav-link"        data-i18n="nav.home">Main Page</a></li>
-        <li><a href="projects.html"       class="nav-link active" data-i18n="nav.projects">Projects</a></li>
-        <li><a href="about.html"          class="nav-link"        data-i18n="nav.about">About Me</a></li>
-        <li><a href="contact.html"        class="nav-link"        data-i18n="nav.contact">Contact Me</a></li>
-      </ul>
-
-      <div class="lang-toggle" role="group" aria-label="Language selector">
-        <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
-        <button class="lang-btn" data-lang="tr" aria-label="Türkçe">TR</button>
-      </div>
-
-      <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
-        <span></span><span></span><span></span>
-      </button>
-    </nav>
-  </header>
-
-  <nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation">
-    <a href="../index.html" class="nav-link" data-i18n="nav.home">Main Page</a>
-    <a href="projects.html" class="nav-link" data-i18n="nav.projects">Projects</a>
-    <a href="about.html"    class="nav-link" data-i18n="nav.about">About Me</a>
-    <a href="contact.html"  class="nav-link" data-i18n="nav.contact">Contact Me</a>
-    <div class="lang-toggle">
-      <button class="lang-btn" data-lang="en">EN</button>
-      <button class="lang-btn" data-lang="tr">TR</button>
-    </div>
+  <nav>
+    <a class="nav-logo" href="../index.html">HK<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html#hakkimda">Hakkımda</a></li>
+      <li><a href="../index.html#beceriler">Beceriler</a></li>
+      <li><a href="../index.html#hobiler">Hobiler</a></li>
+      <li><a href="projects.html">Projeler</a></li>
+      <li><a href="contact.html">İletişim</a></li>
+    </ul>
+    <button class="theme-toggle" id="theme-toggle"><span class="dot"></span><span id="theme-label">Koyu Tema</span></button>
   </nav>
 
-  <main class="page-content" id="main-content">
+  <section style="padding-top: 8rem;">
+    <div class="section-label fade-up">// Projeler</div>
+    <h1 class="section-title fade-up">Çalışmalarım</h1>
 
-    <!-- ══ PAGE HERO ══ -->
-    <section class="hero" style="min-height:45vh;" aria-label="Projects header">
-      <div class="hero-bg"></div>
-      <div class="hero-grid" aria-hidden="true"></div>
-      <div class="hero-line" aria-hidden="true"></div>
-      <div class="hero-content">
-        <p class="hero-eyebrow" data-i18n="label.projects">Selected work</p>
-        <h1 class="hero-title glitch" data-text="PROJECTS" data-i18n="title.projects">PROJECTS</h1>
-        <p class="hero-subtitle" data-i18n="desc.projects">A selection of the work I'm most proud of.</p>
+    <div class="projects-grid">
+      <div class="project-card fade-up">
+        <span class="project-tag">HTML · CSS · JS</span>
+        <div class="project-title">Web Portfolio</div>
+        <p class="project-desc">Kişisel portfolyo web sitesi. HTML, CSS ve JavaScript kullanılarak geliştirilmiştir.</p>
+        <a href="https://web-projesi-2026.github.io/hamza-kahveci-web-portfolio/" class="project-link" target="_blank">Canlıya Git →</a>
       </div>
-    </section>
 
-    <!-- ══ ALL PROJECTS ══ -->
-    <section aria-label="All projects">
-      <div class="section-inner">
-        <div class="projects-grid">
-
-          <article class="project-card reveal">
-            <span class="project-num" aria-hidden="true">01</span>
-            <span class="project-tag" data-i18n="proj.tag.web">Web App</span>
-            <h2 data-i18n="proj.1.title">This Website Itself</h2>
-            <p data-i18n="proj.1.desc">A custom made portfolio website with ease of access in mind.</p>
-            <div class="project-tech">
-              <span class="tech-badge">JavaScript</span>
-              <span class="tech-badge">HTML</span>
-              <span class="tech-badge">CSS</span>
-            </div>
-            <span class="project-arrow" aria-hidden="true">↗</span>
-          </article>
-          
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer role="contentinfo">
-    <div class="footer-inner">
-      <span class="footer-logo">Hamza <span>Kahveci</span></span>
-      <p class="footer-copy" data-i18n="footer.copy">© 2026 Hamza Kahveci Portfolio. All rights reserved.</p>
-      <div class="footer-socials" aria-label="Social links">
-        <a href="https://www.github.com/gb0u" class="footer-social" aria-label="GitHub">GH</a>
-        <a href="#" class="footer-social" aria-label="LinkedIn">LI</a>
-        <a href="#" class="footer-social" aria-label="Twitter/X">X</a>
+      <div class="project-card fade-up">
+        <span class="project-tag">Yakında</span>
+        <div class="project-title">Yeni Proje</div>
+        <p class="project-desc">Yeni projeler geliştirme sürecinde. Takipte kalın!</p>
       </div>
     </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Hamza Kahveci — Tüm hakları saklıdır.</p>
   </footer>
 
   <script src="../assets/js/jScript.js"></script>
