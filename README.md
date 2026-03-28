@@ -1,17 +1,22 @@
-# web-portfolio-hamza-kahveci
-Benim hakkımda olan bir web portfolyosu.<br>
-Tema ve stil olarak tamamlanmıştır.
+# Hamza Kahveci — Web Portfolio
 
-# KULLANILAN AI VE YAZILIM DILLERI
-Temeli HTML ile atılmıştır. <br>
-Teması CSS ile düzenlenmiştir. <br>
-Özellikleri JavaScript ile uyarlanmıştır. <br>
-Bunları üretmeme yardım eden AI=Claude (Sonnet 4.6)
+Kişisel web portfolyom. Hakkımda bilgi, projelerim ve iletişim bilgilerimi içermektedir.
 
-# EKLENECEKLER/DÜZENLENECEKLER
-~~Template olan veriler düzenlenecek.~~ Yapıldı <br>
-Linkler düzenlenecek.
+## 🛠️ Kullanılan Teknolojiler
 
-# TEST LINKI
-[gb0u.github.io/web-portfolio-hamza-kahveci](https://gb0u.github.io/web-portfolio-hamza-kahveci/)
+| Teknoloji | Kullanım Amacı |
+|-----------|---------------|
+| HTML | Sayfa yapısı |
+| CSS | Tema ve stil |
+| JavaScript | Etkileşimli özellikler |
 
+> Geliştirme sürecinde **Claude (Sonnet 4.6)** yapay zekasından yararlanılmıştır.
+
+## ✅ Yapılanlar
+
+- [x] Template verileri düzenlendi
+- [ ] Linkler düzenlenecek
+
+## 🌐 Canlı Demo
+
+[web-projesi-2026.github.io/hamza-kahveci-web-portfolio](https://web-projesi-2026.github.io/hamza-kahveci-web-portfolio/)
