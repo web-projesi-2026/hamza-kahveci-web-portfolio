@@ -36,6 +36,7 @@
 - ⚡ **Scroll animasyonları**
 - 🖼️ **GitHub profil fotoğrafı** entegrasyonu
 - 💾 **Tema tercihi kaydedilir** (localStorage)
+- 🎨 **Arkaplan desteği**
 
 ---
 
@@ -46,6 +47,8 @@
 ├── assets/
 │   ├── css/
 │   │   └── style.css
+│   ├── img/
+│   │   └── bg_img.png
 │   └── js/
 │       └── jScript.js
 └── pages/
