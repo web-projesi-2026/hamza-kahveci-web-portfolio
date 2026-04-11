@@ -47,7 +47,7 @@ body {
   position: relative;
 }
 
-/* BACKGROUND IMAGE — blurred, fixed, full-cover */
+/* BACKGROUND IMAGE */
 body::after {
   content: '';
   position: fixed;
@@ -57,12 +57,11 @@ body::after {
   background-position: center center;
   background-repeat: no-repeat;
   filter: blur(6px) brightness(0.55) saturate(0.8);
-  transform: scale(1.05); /* prevents blur edge bleed */
+  transform: scale(1.05);
   z-index: -2;
   pointer-events: none;
 }
 
-/* Subtle color overlay so theme colors still show through */
 body::before {
   content: '';
   position: fixed;
@@ -72,16 +71,6 @@ body::before {
   z-index: -1;
   pointer-events: none;
   transition: background 0.3s;
-}
-
-/* NOISE TEXTURE */
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 999;
-  opacity: 0.4;
 }
 
 /* NAV */
@@ -128,6 +117,106 @@ nav {
 
 .nav-links a:hover { color: var(--accent); }
 
+/* NAV RIGHT: toggle + hamburger */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* HAMBURGER BUTTON */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 6px;
+  transition: border-color 0.2s;
+}
+
+.hamburger:hover { border-color: var(--accent); }
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Hamburger → X animation */
+.hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* MOBILE MENU OVERLAY */
+.mobile-menu {
+  /* display: none yerine flex kullan, görünürlüğü opacity ile kontrol et */
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--nav-bg);
+  backdrop-filter: blur(24px);
+  z-index: 99;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  visibility: hidden; /* ekran okuyuculardan da gizle */
+}
+
+.mobile-menu.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+  visibility: visible;
+}
+
+.mobile-menu a {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  transition: color 0.2s;
+}
+
+.mobile-menu a:hover { color: var(--accent); }
+
+.mobile-menu-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+
 /* HERO */
 .hero {
   min-height: 100vh;
@@ -161,6 +250,7 @@ nav {
   position: relative;
   z-index: 1;
   max-width: 800px;
+  width: 100%;
 }
 
 .hero-tag {
@@ -247,6 +337,7 @@ section {
   padding: 6rem 4rem;
   max-width: 1100px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .section-label {
@@ -285,6 +376,7 @@ section {
   border: 1px solid var(--border);
   border-radius: 6px;
   width: fit-content;
+  max-width: 100%;
 }
 
 .avatar-wrap img {
@@ -292,6 +384,10 @@ section {
   height: 64px;
   border-radius: 50%;
   border: 2px solid var(--accent);
+  flex-shrink: 0;
+  /* Görselin taşmasını engelle */
+  object-fit: cover;
+  max-width: 64px;
 }
 
 .avatar-info .name {
@@ -403,6 +499,9 @@ section {
   text-decoration: none;
   color: var(--text);
   transition: all 0.2s;
+  /* Taşmayı engelle */
+  overflow: hidden;
+  word-break: break-word;
 }
 
 .contact-card:hover {
@@ -416,7 +515,76 @@ section {
 }
 
 .contact-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
-.contact-value { font-size: 0.85rem; }
+.contact-value { font-size: 0.85rem; word-break: break-all; }
+
+/* PROJECTS */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2rem;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+
+.project-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(124,109,250,0.1);
+}
+
+.project-card:hover::after { transform: scaleX(1); }
+
+.project-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(124,109,250,0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  margin-bottom: 1rem;
+}
+
+.project-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.project-desc {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.project-link {
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+.project-link:hover { text-decoration: underline; }
 
 /* FOOTER */
 footer {
@@ -459,6 +627,7 @@ footer {
   color: var(--muted);
   transition: all 0.2s;
   letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
 .theme-toggle:hover {
@@ -474,17 +643,148 @@ footer {
   flex-shrink: 0;
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  nav { padding: 1rem 1.5rem; }
-  .nav-links { gap: 1.5rem; }
-  .hero { padding: 7rem 1.5rem 3rem; }
-  section { padding: 4rem 1.5rem; }
+/* Görsellerin genel taşma koruması */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
 
-  /* background-attachment: fixed doesn't work on iOS;
-     switch to scroll and slightly increase blur for mobile */
+/* =============================================
+   RESPONSIVE — TABLET (max-width: 1024px)
+   ============================================= */
+@media (max-width: 1024px) {
+  nav { padding: 1.2rem 2rem; }
+
+  .hero { padding: 8rem 2rem 4rem; }
+
+  section { padding: 5rem 2rem; }
+
+  .skills-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+}
+
+/* =============================================
+   RESPONSIVE — MOBİL (max-width: 768px)
+   ============================================= */
+@media (max-width: 768px) {
+
+  /* NAV — Hamburger göster, linkleri gizle */
+  nav {
+    padding: 1rem 1.5rem;
+  }
+
+  .nav-links {
+    display: none; /* Masaüstü link listesi mobilde gizli */
+  }
+
+  .hamburger {
+    display: flex; /* Hamburger butonu göster */
+  }
+
+  /* Theme toggle metnini kısalt */
+  #theme-label {
+    display: none;
+  }
+
+  .theme-toggle {
+    padding: 0.35rem 0.5rem;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 7rem 1.5rem 3rem;
+    min-height: 100svh; /* Mobilde safe-area kullan */
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .hero-desc {
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+
+  .hero-cta {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 4rem 1.5rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 7vw, 2.5rem);
+  }
+
+  /* AVATAR — Mobilde sığacak şekilde */
+  .avatar-wrap {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    width: 100%;
+  }
+
+  /* SKILLS GRID — Mobilde 2 kolon */
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  /* HOBBIES — Mobilde tek kolon */
+  .hobbies-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* CONTACT — Mobilde tek kolon */
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-card {
+    transform: none !important; /* Hover slideı mobilde engelle */
+  }
+
+  /* PROJECTS — Mobilde tek kolon */
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Arka plan — iOS fixed hack */
   body::after {
     background-attachment: scroll;
     filter: blur(8px) brightness(0.50) saturate(0.75);
+  }
+}
+
+/* =============================================
+   RESPONSIVE — KÜÇÜK MOBİL (max-width: 400px)
+   ============================================= */
+@media (max-width: 400px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .avatar-wrap img {
+    width: 48px;
+    height: 48px;
+    max-width: 48px;
   }
 }

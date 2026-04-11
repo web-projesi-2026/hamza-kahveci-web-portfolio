@@ -8,6 +8,7 @@
 </head>
 <body>
 
+  <!-- NAV -->
   <nav>
     <a class="nav-logo" href="index.html">HK<span>.</span></a>
     <ul class="nav-links">
@@ -17,11 +18,28 @@
       <li><a href="pages/projects.html">Projeler</a></li>
       <li><a href="pages/contact.html">İletişim</a></li>
     </ul>
-    <button class="theme-toggle" id="theme-toggle">
-      <span class="dot"></span>
-      <span id="theme-label">Koyu Tema</span>
-    </button>
+    <div class="nav-right">
+      <button class="theme-toggle" id="theme-toggle">
+        <span class="dot"></span>
+        <span id="theme-label">Koyu Tema</span>
+      </button>
+      <!-- Hamburger butonu — sadece mobilde görünür -->
+      <button class="hamburger" id="hamburger" aria-label="Menüyü aç">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
   </nav>
+
+  <!-- MOBİL MENÜ OVERLAY -->
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Navigasyon Menüsü">
+    <a href="#hakkimda">Hakkımda</a>
+    <a href="#beceriler">Beceriler</a>
+    <a href="#hobiler">Hobiler</a>
+    <a href="pages/projects.html">Projeler</a>
+    <a href="pages/contact.html">İletişim</a>
+  </div>
 
   <!-- HERO -->
   <div class="hero">
@@ -34,7 +52,7 @@
         <span class="accent">Kahveci</span><span class="accent2">.</span>
       </h1>
       <p class="hero-desc">
-        Yazılım geliştirici & teknoloji meraklısı. Kod yazmaktan, sistemleri anlamaktan ve yeni şeyler inşa etmekten keyif alıyorum.
+        Yazılım geliştirici &amp; teknoloji meraklısı. Kod yazmaktan, sistemleri anlamaktan ve yeni şeyler inşa etmekten keyif alıyorum.
       </p>
       <div class="hero-cta">
         <a href="pages/projects.html" class="btn btn-primary">Projeleri Gör →</a>
@@ -101,7 +119,7 @@
       </div>
       <div class="hobby-card fade-up">
         <div class="hobby-num">02</div>
-        <div class="hobby-title">Donanım & Tamir</div>
+        <div class="hobby-title">Donanım &amp; Tamir</div>
         <p class="hobby-desc">Bilgisayarları fiziksel olarak incelemek, parçalamak, onarmak ve yeniden bir araya getirmek benim için büyük bir zevk.</p>
       </div>
     </div>

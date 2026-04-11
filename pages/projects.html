@@ -5,75 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projeler — Hamza Kahveci</title>
   <link rel="stylesheet" href="../assets/css/style.css" />
-  <style>
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .project-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 2rem;
-      transition: all 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .project-card::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      transform: scaleX(0);
-      transition: transform 0.3s;
-    }
-
-    .project-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-4px);
-      box-shadow: 0 16px 40px rgba(124,109,250,0.1);
-    }
-
-    .project-card:hover::after { transform: scaleX(1); }
-
-    .project-tag {
-      display: inline-block;
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      background: rgba(124,109,250,0.1);
-      padding: 0.2rem 0.6rem;
-      border-radius: 2px;
-      margin-bottom: 1rem;
-    }
-
-    .project-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-    }
-
-    .project-desc {
-      color: var(--muted);
-      font-size: 0.85rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .project-link {
-      font-size: 0.8rem;
-      color: var(--accent);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-    }
-
-    .project-link:hover { text-decoration: underline; }
-  </style>
 </head>
 <body>
 
@@ -86,8 +17,26 @@
       <li><a href="projects.html">Projeler</a></li>
       <li><a href="contact.html">İletişim</a></li>
     </ul>
-    <button class="theme-toggle" id="theme-toggle"><span class="dot"></span><span id="theme-label">Koyu Tema</span></button>
+    <div class="nav-right">
+      <button class="theme-toggle" id="theme-toggle">
+        <span class="dot"></span>
+        <span id="theme-label">Koyu Tema</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menüyü aç">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
   </nav>
+
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Navigasyon Menüsü">
+    <a href="../index.html#hakkimda">Hakkımda</a>
+    <a href="../index.html#beceriler">Beceriler</a>
+    <a href="../index.html#hobiler">Hobiler</a>
+    <a href="projects.html">Projeler</a>
+    <a href="contact.html">İletişim</a>
+  </div>
 
   <section style="padding-top: 8rem;">
     <div class="section-label fade-up">// Projeler</div>
@@ -98,7 +47,7 @@
         <span class="project-tag">HTML · CSS · JS</span>
         <div class="project-title">Web Portfolio</div>
         <p class="project-desc">Kişisel portfolyo web sitesi. HTML, CSS ve JavaScript kullanılarak geliştirilmiştir.</p>
-        <a href="https://web-projesi-2026.github.io/hamza-kahveci-web-portfolio/" class="project-link" target="_blank">Canlıya Git →</a>
+        <a href="https://web-projesi-2026.github.io/hamza-kahveci-web-portfolio/" class="project-link" target="_blank" rel="noopener noreferrer">Canlıya Git →</a>
       </div>
 
       <div class="project-card fade-up">

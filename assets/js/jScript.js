@@ -45,3 +45,37 @@ if (toggle) {
     if (label) label.textContent = isDark ? 'Açık Tema' : 'Koyu Tema';
   });
 }
+
+// =============================================
+// HAMBURGer MENÜ
+// =============================================
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+
+if (hamburger && mobileMenu) {
+  // Menüyü aç / kapat
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('active', isOpen);
+    // Menü açıkken sayfanın scroll'unu kilitle
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  // Mobil menüdeki linklere tıklanınca menüyü kapat
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Escape tuşuyla menüyü kapat
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+}
