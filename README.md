@@ -36,6 +36,7 @@
 - ⚡ **Scroll animasyonları**
 - 🖼️ **GitHub profil fotoğrafı** entegrasyonu
 - 💾 **Tema tercihi kaydedilir** (localStorage)
+- 🎨 **Arkaplan desteği**
 
 ---
 
