@@ -112,15 +112,25 @@
     <div class="section-label fade-up">// 03</div>
     <h2 class="section-title fade-up">Hobiler</h2>
     <div class="hobbies-grid">
-      <div class="hobby-card fade-up">
+      <div class="hobby-card fade-up"
+           data-num="01"
+           data-title="Oyun Oynamak"
+           data-desc="Dijital dünyalarda vakit geçirmeyi, rekabete dayalı ve hikaye odaklı oyunları seviyorum."
+           tabindex="0" role="button" aria-label="Oyun Oynamak hakkında detay">
         <div class="hobby-num">01</div>
         <div class="hobby-title">Oyun Oynamak</div>
         <p class="hobby-desc">Dijital dünyalarda vakit geçirmeyi, rekabete dayalı ve hikaye odaklı oyunları seviyorum.</p>
+        <span class="hobby-hint">Detay →</span>
       </div>
-      <div class="hobby-card fade-up">
+      <div class="hobby-card fade-up"
+           data-num="02"
+           data-title="Donanım &amp; Tamir"
+           data-desc="Bilgisayarları fiziksel olarak incelemek, parçalamak, onarmak ve yeniden bir araya getirmek benim için büyük bir zevk."
+           tabindex="0" role="button" aria-label="Donanım ve Tamir hakkında detay">
         <div class="hobby-num">02</div>
         <div class="hobby-title">Donanım &amp; Tamir</div>
         <p class="hobby-desc">Bilgisayarları fiziksel olarak incelemek, parçalamak, onarmak ve yeniden bir araya getirmek benim için büyük bir zevk.</p>
+        <span class="hobby-hint">Detay →</span>
       </div>
     </div>
   </section>
@@ -130,6 +140,19 @@
   <footer>
     <p>© 2026 Hamza Kahveci — Tüm hakları saklıdır.</p>
   </footer>
+
+  <!-- HOBBY MODAL -->
+  <div class="hobby-modal-overlay" id="hobby-modal-overlay" role="dialog" aria-modal="true" aria-label="Hobi Detayı">
+    <div class="hobby-modal" id="hobby-modal">
+      <button class="hobby-modal-close" id="hobby-modal-close" aria-label="Kapat">✕</button>
+      <div class="hobby-modal-num" id="modal-num"></div>
+      <div class="hobby-modal-title" id="modal-title"></div>
+      <p class="hobby-modal-desc" id="modal-desc"></p>
+    </div>
+  </div>
+
+  <!-- SCROLL TO TOP -->
+  <button class="scroll-top-btn" id="scroll-top-btn" aria-label="Sayfanın başına git">↑</button>
 
   <script src="assets/js/jScript.js"></script>
 </body>

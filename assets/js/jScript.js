@@ -47,8 +47,92 @@ if (toggle) {
 }
 
 // =============================================
-// HAMBURGer MENÜ
+// SCROLL TO TOP BUTTON
 // =============================================
+const scrollTopBtn = document.getElementById('scroll-top-btn');
+
+if (scrollTopBtn) {
+  // Show button when user is near the bottom of the page
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY + window.innerHeight;
+    const total = document.documentElement.scrollHeight;
+    // Appear when within 300px of the bottom
+    if (total - scrolled < 300) {
+      scrollTopBtn.classList.add('visible');
+    } else {
+      scrollTopBtn.classList.remove('visible');
+    }
+  });
+
+  scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// =============================================
+// HOBBY MODAL
+// =============================================
+const modalOverlay = document.getElementById('hobby-modal-overlay');
+const modalClose  = document.getElementById('hobby-modal-close');
+const modalNum    = document.getElementById('modal-num');
+const modalTitle  = document.getElementById('modal-title');
+const modalDesc   = document.getElementById('modal-desc');
+
+// Detect touch/mobile device
+const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
+
+function openHobbyModal(card) {
+  modalNum.textContent   = card.dataset.num;
+  modalTitle.textContent = card.dataset.title;
+  modalDesc.textContent  = card.dataset.desc;
+  modalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeHobbyModal() {
+  modalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.hobby-card').forEach(card => {
+  // Desktop: open on hover, close when mouse leaves the overlay
+  card.addEventListener('mouseenter', () => {
+    if (!isTouchDevice()) openHobbyModal(card);
+  });
+
+  // Mobile & desktop: open on click/tap
+  card.addEventListener('click', () => openHobbyModal(card));
+
+  // Keyboard accessibility
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openHobbyModal(card);
+    }
+  });
+});
+
+if (modalClose)   modalClose.addEventListener('click', closeHobbyModal);
+
+// Close when clicking the backdrop
+if (modalOverlay) {
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) closeHobbyModal();
+  });
+
+  // Close modal when mouse leaves the overlay on desktop
+  modalOverlay.addEventListener('mouseleave', () => {
+    if (!isTouchDevice()) closeHobbyModal();
+  });
+}
+
+// Escape key closes modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('open')) {
+    closeHobbyModal();
+  }
+});
+
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobile-menu');
 

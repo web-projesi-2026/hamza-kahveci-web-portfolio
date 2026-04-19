@@ -586,6 +586,158 @@ section {
 
 .project-link:hover { text-decoration: underline; }
 
+/* =============================================
+   SCROLL TO TOP BUTTON
+   ============================================= */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 200;
+  width: 44px;
+  height: 44px;
+  border-radius: 4px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 20px rgba(220,20,60,0.35);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s;
+}
+
+.scroll-top-btn.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.scroll-top-btn:hover {
+  background: var(--accent2);
+  box-shadow: 0 8px 28px rgba(220,20,60,0.45);
+}
+
+/* =============================================
+   HOBBY MODAL
+   ============================================= */
+.hobby-card {
+  cursor: pointer;
+}
+
+/* Hide description inside the card — shown only in modal */
+.hobby-card .hobby-desc {
+  display: none;
+}
+
+/* "Detay" hint badge on card */
+.hobby-hint {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(220,20,60,0.3);
+  padding: 0.2rem 0.55rem;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+
+.hobby-card:hover .hobby-hint {
+  background: rgba(220,20,60,0.1);
+}
+
+/* Overlay backdrop */
+.hobby-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.hobby-modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Modal box */
+.hobby-modal {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2.5rem;
+  max-width: 420px;
+  width: 100%;
+  position: relative;
+  transform: translateY(16px) scale(0.97);
+  transition: transform 0.25s ease;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.35), 0 0 0 1px rgba(220,20,60,0.12);
+}
+
+.hobby-modal-overlay.open .hobby-modal {
+  transform: translateY(0) scale(1);
+}
+
+.hobby-modal-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--border);
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.hobby-modal-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.hobby-modal-desc {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
+.hobby-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 1rem;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.hobby-modal-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* FOOTER */
 footer {
   text-align: center;
@@ -761,6 +913,19 @@ img {
   /* PROJECTS — Mobilde tek kolon */
   .projects-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Scroll-to-top — Mobilde biraz daha küçük ve yukarıda */
+  .scroll-top-btn {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Hobby Modal — Mobilde tam genişlik */
+  .hobby-modal {
+    padding: 2rem 1.5rem;
   }
 
   /* Arka plan — iOS fixed hack */
