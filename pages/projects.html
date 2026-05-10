@@ -5,6 +5,88 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projeler — Hamza Kahveci</title>
   <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    /* ── Favori butonu ── */
+    .project-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.2rem;
+      gap: 0.75rem;
+    }
+
+    .fav-btn {
+      background: none;
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      border-radius: 8px;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+
+    .fav-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      transform: scale(1.05);
+    }
+
+    .fav-btn.aktif {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .fav-btn .kalp {
+      font-size: 1rem;
+      transition: transform 0.2s;
+    }
+
+    .fav-btn.aktif .kalp {
+      transform: scale(1.25);
+    }
+
+    /* ── Favori sayacı bildirimi ── */
+    .fav-bildirim {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 12px;
+      padding: 0.6rem 1.1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .fav-bildirim.goster {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Yükleniyor göstergesi ── */
+    .yukleniyor {
+      text-align: center;
+      padding: 3rem;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    /* ── Durum etiketi renkleri ── */
+    .project-tag.canli          { background: rgba(34,197,94,0.12); color: #22c55e; }
+    .project-tag.gelistiriliyor { background: rgba(234,179,8,0.12); color: #ca8a04; }
+    .project-tag.planlaniyor    { background: rgba(148,163,184,0.12); color: #94a3b8; }
+  </style>
 </head>
 <body>
 
@@ -42,26 +124,130 @@
     <div class="section-label fade-up">// Projeler</div>
     <h1 class="section-title fade-up">Çalışmalarım</h1>
 
-    <div class="projects-grid">
-      <div class="project-card fade-up">
-        <span class="project-tag">HTML · CSS · JS</span>
-        <div class="project-title">Web Portfolio</div>
-        <p class="project-desc">Kişisel portfolyo web sitesi. HTML, CSS ve JavaScript kullanılarak geliştirilmiştir.</p>
-        <a href="https://web-projesi-2026.github.io/hamza-kahveci-web-portfolio/" class="project-link" target="_blank" rel="noopener noreferrer">Canlıya Git →</a>
-      </div>
-
-      <div class="project-card fade-up">
-        <span class="project-tag">Yakında</span>
-        <div class="project-title">Yeni Proje</div>
-        <p class="project-desc">Yeni projeler geliştirme sürecinde. Takipte kalın!</p>
-      </div>
+    <!-- Kartlar buraya JS tarafından eklenir -->
+    <div class="projects-grid" id="projects-container">
+      <p class="yukleniyor">Projeler yükleniyor...</p>
     </div>
   </section>
+
+  <!-- Favori bildirimi -->
+  <div class="fav-bildirim" id="fav-bildirim">❤️ Favorilere eklendi!</div>
 
   <footer>
     <p>© 2026 Hamza Kahveci — Tüm hakları saklıdır.</p>
   </footer>
 
   <script src="../assets/js/jScript.js"></script>
+
+  <script>
+    // ============================================================
+    // PROJELER — JSON'dan oku, kartları oluştur, favorileri sakla
+    // ============================================================
+
+    const container   = document.getElementById('projects-container');
+    const bildirim    = document.getElementById('fav-bildirim');
+    let bildirimTimer = null;
+
+    // localStorage'dan favori ID'leri al
+    let favoriler = JSON.parse(localStorage.getItem('favoriProjeler')) || [];
+
+    // ── Bildirim göster ──────────────────────────────────────────
+    function bildirimGoster(mesaj) {
+      bildirim.textContent = mesaj;
+      bildirim.classList.add('goster');
+      clearTimeout(bildirimTimer);
+      bildirimTimer = setTimeout(() => bildirim.classList.remove('goster'), 2200);
+    }
+
+    // ── Favori durumunu güncelle ─────────────────────────────────
+    function favoriGuncelle(id, btn) {
+      const idx = favoriler.indexOf(id);
+
+      if (idx === -1) {
+        favoriler.push(id);
+        btn.classList.add('aktif');
+        btn.querySelector('.etiket').textContent = 'Favorilendi';
+        bildirimGoster('❤️ Favorilere eklendi!');
+      } else {
+        favoriler.splice(idx, 1);
+        btn.classList.remove('aktif');
+        btn.querySelector('.etiket').textContent = 'Favorile';
+        bildirimGoster('🤍 Favorilerden çıkarıldı.');
+      }
+
+      // localStorage'a kaydet
+      localStorage.setItem('favoriProjeler', JSON.stringify(favoriler));
+    }
+
+    // ── Tek kart HTML'i ─────────────────────────────────────────
+    function kartOlustur(proje) {
+      const isFav = favoriler.includes(proje.id);
+      const tagSinif = {
+        'canlı':          'canli',
+        'geliştiriliyor': 'gelistiriliyor',
+        'planlanıyor':    'planlaniyor'
+      }[proje.durum] || '';
+
+      // Teknoloji etiketleri
+      const tagHTML = proje.tags
+        .map(t => `<span class="project-tag">${t}</span>`)
+        .join('');
+
+      // Durum etiketi
+      const durumHTML = `<span class="project-tag ${tagSinif}">${proje.durum}</span>`;
+
+      // Link butonu
+      const linkHTML = proje.link
+        ? `<a href="${proje.link}" class="project-link" target="_blank" rel="noopener noreferrer">Canlıya Git →</a>`
+        : `<span class="project-link" style="opacity:0.35;cursor:default;">Yakında →</span>`;
+
+      const kart = document.createElement('div');
+      kart.className = 'project-card fade-up';
+      kart.innerHTML = `
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.6rem;">
+          ${tagHTML}
+          ${durumHTML}
+        </div>
+        <div class="project-title">${proje.title}</div>
+        <p class="project-desc">${proje.desc}</p>
+        <div class="project-actions">
+          ${linkHTML}
+          <button class="fav-btn ${isFav ? 'aktif' : ''}" data-id="${proje.id}" aria-label="Favorilere ekle">
+            <span class="kalp">${isFav ? '❤️' : '🤍'}</span>
+            <span class="etiket">${isFav ? 'Favorilendi' : 'Favorile'}</span>
+          </button>
+        </div>
+      `;
+
+      kart.querySelector('.fav-btn').addEventListener('click', function () {
+        const kalp = this.querySelector('.kalp');
+        favoriGuncelle(proje.id, this);
+        kalp.textContent = favoriler.includes(proje.id) ? '❤️' : '🤍';
+      });
+
+      return kart;
+    }
+
+    // ── JSON'dan projeleri yükle ─────────────────────────────────
+    fetch('../assets/data/projects.json')
+      .then(res => {
+        if (!res.ok) throw new Error('Veri yüklenemedi');
+        return res.json();
+      })
+      .then(projeler => {
+        container.innerHTML = '';
+        projeler.forEach(proje => {
+          const kart = kartOlustur(proje);
+          container.appendChild(kart);
+        });
+        // Scroll animasyonunu yeni kartlara uygula
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+      })
+      .catch(err => {
+        container.innerHTML = `<p class="yukleniyor" style="color:var(--accent);">⚠️ Projeler yüklenirken hata oluştu.</p>`;
+        console.error(err);
+      });
+  </script>
+
 </body>
 </html>
