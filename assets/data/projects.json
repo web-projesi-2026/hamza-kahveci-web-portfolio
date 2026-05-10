@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "title": "Web Portfolio",
+    "desc": "Kişisel portfolyo web sitesi. HTML, CSS ve JavaScript kullanılarak geliştirilmiştir. Crimson & White temalı, karanlık mod destekli modern tasarım.",
+    "tags": ["HTML", "CSS", "JavaScript"],
+    "link": "https://web-projesi-2026.github.io/hamza-kahveci-web-portfolio/",
+    "durum": "canlı"
+  },
+  {
+    "id": 2,
+    "title": "Hava Durumu Uygulaması",
+    "desc": "OpenWeather API kullanılarak geliştirilen, şehir bazlı anlık hava durumu ve 5 günlük tahmin sunan web uygulaması.",
+    "tags": ["JavaScript", "API", "CSS"],
+    "link": null,
+    "durum": "geliştiriliyor"
+  },
+  {
+    "id": 3,
+    "title": "Görev Takip Uygulaması",
+    "desc": "localStorage tabanlı, sürükle-bırak destekli Kanban tarzı görev yönetim uygulaması. Görevler kategorilere ayrılarak takip edilebilir.",
+    "tags": ["HTML", "CSS", "JavaScript"],
+    "link": null,
+    "durum": "geliştiriliyor"
+  },
+  {
+    "id": 4,
+    "title": "Quiz Uygulaması",
+    "desc": "Farklı kategorilerde çoktan seçmeli sorular içeren, süre sınırlı ve skor takipli bir bilgi yarışması uygulaması.",
+    "tags": ["JavaScript", "JSON", "CSS"],
+    "link": null,
+    "durum": "planlanıyor"
+  }
+]
