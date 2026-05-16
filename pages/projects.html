@@ -42,7 +42,7 @@
       background: var(--surface2);
     }
 
-    /* ── Favori butonu ── */
+    /* Favori butonu */
     .project-actions {
       display: flex;
       align-items: center;
@@ -89,6 +89,19 @@
     .fav-bildirim.goster { opacity: 1; transform: translateY(0); }
     .yukleniyor { text-align: center; padding: 3rem; color: var(--muted); font-size: 1rem; }
     
+    /* Yedek kaynak uyarı bandı */
+    .fallback-banner {
+      background: rgba(234,179,8,0.12);
+      border: 1px solid rgba(234,179,8,0.4);
+      color: #ca8a04;
+      padding: 0.7rem 1.2rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      margin-bottom: 2rem;
+      display: none;
+    }
+    .fallback-banner.goster { display: block; }
+
     .project-tag.canli          { background: rgba(34,197,94,0.12); color: #22c55e; }
     .project-tag.gelistiriliyor { background: rgba(234,179,8,0.12); color: #ca8a04; }
     .project-tag.planlaniyor    { background: rgba(148,163,184,0.12); color: #94a3b8; }
@@ -96,39 +109,16 @@
 </head>
 <body>
 
-  <nav>
-    <a class="nav-logo" href="../index.html">HK<span>.</span></a>
-    <ul class="nav-links">
-      <li><a href="../index.html#hakkimda">Hakkımda</a></li>
-      <li><a href="../index.html#beceriler">Beceriler</a></li>
-      <li><a href="../index.html#hobiler">Hobiler</a></li>
-      <li><a href="projects.html">Projeler</a></li>
-      <li><a href="contact.html">İletişim</a></li>
-    </ul>
-    <div class="nav-right">
-      <button class="theme-toggle" id="theme-toggle">
-        <span class="dot"></span>
-        <span id="theme-label">Koyu Tema</span>
-      </button>
-      <button class="hamburger" id="hamburger" aria-label="Menüyü aç">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-  </nav>
-
-  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Navigasyon Menüsü">
-    <a href="../index.html#hakkimda">Hakkımda</a>
-    <a href="../index.html#beceriler">Beceriler</a>
-    <a href="../index.html#hobiler">Hobiler</a>
-    <a href="projects.html">Projeler</a>
-    <a href="contact.html">İletişim</a>
-  </div>
+  <!-- Nav, mobile-menu ve footer components.js tarafından otomatik eklenir -->
 
   <section style="padding-top: 8rem;">
     <div class="section-label fade-up visible">// Projeler</div>
     <h1 class="section-title fade-up visible" style="margin-bottom: 1.5rem;">Çalışmalarım</h1>
+
+    <!-- Yedek veri kullanıldığında görünür -->
+    <div class="fallback-banner" id="fallback-banner">
+      ⚠️ Veritabanına bağlanılamadı — projeler yerel dosyadan yüklendi.
+    </div>
 
     <div class="filter-wrapper fade-up visible">
       <div class="filter-buttons">
@@ -141,33 +131,36 @@
     </div>
 
     <div class="projects-grid" id="projects-container">
-      <p class="yukleniyor">Veritabanından projeler yükleniyor...</p>
+      <p class="yukleniyor">Projeler yükleniyor...</p>
     </div>
   </section>
 
   <div class="fav-bildirim" id="fav-bildirim">❤️ Favorilere eklendi!</div>
 
-  <footer>
-    <p>© 2026 Hamza Kahveci — Tüm hakları sablıdır.</p>
-  </footer>
-
+  <!-- Bileşenler (nav + footer) ve genel scriptler -->
+  <script src="../assets/js/components.js"></script>
   <script src="../assets/js/jScript.js"></script>
 
   <script type="module">
     import { db } from "../assets/js/firebase-config.js";
     import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    const container = document.getElementById('projects-container');
-    const searchInput = document.getElementById('ux-search');
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const bildirim = document.getElementById('fav-bildirim');
-    
-    let tümProjeler = [];
-    let aktifKategori = 'all';
-    let aramaMetni = '';
-    let bildirimTimer = null;
-    let favoriler = JSON.parse(localStorage.getItem('favoriProjeler')) || [];
+    const container     = document.getElementById('projects-container');
+    const searchInput   = document.getElementById('ux-search');
+    const filterBtns    = document.querySelectorAll('.filter-btn');
+    const bildirim      = document.getElementById('fav-bildirim');
+    const fallbackBanner = document.getElementById('fallback-banner');
 
+    // JSON yedek dosyasının yolu
+    const JSON_FALLBACK_URL = '../assets/data/projects.json';
+
+    let tümProjeler    = [];
+    let aktifKategori  = 'all';
+    let aramaMetni     = '';
+    let bildirimTimer  = null;
+    let favoriler      = JSON.parse(localStorage.getItem('favoriProjeler')) || [];
+
+    // ── Bildirim göster ──────────────────────────────────
     function bildirimGoster(mesaj) {
       bildirim.textContent = mesaj;
       bildirim.classList.add('goster');
@@ -175,10 +168,11 @@
       bildirimTimer = setTimeout(() => bildirim.classList.remove('goster'), 2200);
     }
 
+    // ── Favori güncelle ──────────────────────────────────
     function favoriGuncelle(id, btn) {
-      const idx = favoriler.indexOf(id);
+      const idx = favoriler.indexOf(String(id));
       if (idx === -1) {
-        favoriler.push(id);
+        favoriler.push(String(id));
         btn.classList.add('aktif');
         btn.querySelector('.etiket').textContent = 'Favorilendi';
         bildirimGoster('❤️ Favorilere eklendi!');
@@ -191,27 +185,36 @@
       localStorage.setItem('favoriProjeler', JSON.stringify(favoriler));
     }
 
-    // Kartları Ekrana Filtreli Basma Fonksiyonu
+    // ── Kartları filtrele ve ekrana bas ──────────────────
     function projeleriFiltreleVeListele() {
       container.innerHTML = '';
-      
+
       const filtrelenmiş = tümProjeler.filter(proje => {
         const kategoriUyum = aktifKategori === 'all' || proje.category === aktifKategori;
-        const aramaUyum = proje.title.toLowerCase().includes(aramaMetni) || 
-                          proje.desc.toLowerCase().includes(aramaMetni);
+        const aramaUyum =
+          proje.title.toLowerCase().includes(aramaMetni) ||
+          proje.desc.toLowerCase().includes(aramaMetni);
         return kategoriUyum && aramaUyum;
       });
 
-      if(filtrelenmiş.length === 0) {
+      if (filtrelenmiş.length === 0) {
         container.innerHTML = `<p class="yukleniyor">Aradığınız kriterlere uygun proje bulunamadı.</p>`;
         return;
       }
 
       filtrelenmiş.forEach(proje => {
-        const isFav = favoriler.includes(proje.id);
-        const tagSinif = { 'canlı': 'canli', 'geliştiriliyor': 'gelistiriliyor', 'planlanıyor': 'planlaniyor' }[proje.durum] || '';
-        const tagHTML = proje.tags.map(t => `<span class="project-tag">${t}</span>`).join('');
-        const linkHTML = proje.link ? `<a href="${proje.link}" class="project-link" target="_blank" rel="noopener noreferrer">Canlıya Git →</a>` : `<span class="project-link" style="opacity:0.35;cursor:default;">Yakında →</span>`;
+        const favId   = String(proje.id);
+        const isFav   = favoriler.includes(favId);
+        const tagSinif = {
+          'canlı': 'canli',
+          'geliştiriliyor': 'gelistiriliyor',
+          'planlanıyor': 'planlaniyor'
+        }[proje.durum] || '';
+
+        const tagHTML  = proje.tags.map(t => `<span class="project-tag">${t}</span>`).join('');
+        const linkHTML = proje.link
+          ? `<a href="${proje.link}" class="project-link" target="_blank" rel="noopener noreferrer">Canlıya Git →</a>`
+          : `<span class="project-link" style="opacity:0.35;cursor:default;">Yakında →</span>`;
 
         const kart = document.createElement('div');
         kart.className = 'project-card fade-up visible';
@@ -224,48 +227,73 @@
           <p class="project-desc">${proje.desc}</p>
           <div class="project-actions">
             ${linkHTML}
-            <button class="fav-btn ${isFav ? 'aktif' : ''}" data-id="${proje.id}">
+            <button class="fav-btn ${isFav ? 'aktif' : ''}" data-id="${favId}">
               <span class="kalp">${isFav ? '❤️' : '🤍'}</span>
               <span class="etiket">${isFav ? 'Favorilendi' : 'Favorile'}</span>
             </button>
-          </div>
-        `;
+          </div>`;
 
         kart.querySelector('.fav-btn').addEventListener('click', function () {
-          favoriGuncelle(proje.id, this);
-          this.querySelector('.kalp').textContent = favoriler.includes(proje.id) ? '❤️' : '🤍';
+          favoriGuncelle(favId, this);
+          this.querySelector('.kalp').textContent = favoriler.includes(favId) ? '❤️' : '🤍';
         });
 
         container.appendChild(kart);
       });
     }
 
-    // Firestore'dan Canlı Veri Listeleme (READ)
+    // ── JSON yedek veri yükle ────────────────────────────
+    async function jsondenYukle() {
+      const res  = await fetch(JSON_FALLBACK_URL);
+      if (!res.ok) throw new Error('JSON dosyası okunamadı');
+      const data = await res.json();
+      // JSON'daki category alanı yoksa 'Web' varsay
+      return data.map(p => ({ ...p, category: p.category || 'Web' }));
+    }
+
+    // ── Firebase'den veri çek, hata olursa JSON'a dön ───
     async function verileriGetir() {
       try {
-        const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
+        const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
+        const snapshot = await getDocs(q);
+
+        // Firebase boşsa veya hata yoksa burası çalışır
         tümProjeler = [];
-        
-        querySnapshot.forEach((doc) => {
+        snapshot.forEach(doc => {
           tümProjeler.push({ id: doc.id, ...doc.data() });
         });
-        
+
+        // Firebase boş döndüyse JSON'a düş
+        if (tümProjeler.length === 0) {
+          throw new Error('Firebase boş — JSON yedek kullanılıyor');
+        }
+
         projeleriFiltreleVeListele();
-      } catch (error) {
-        container.innerHTML = `<p class="yukleniyor" style="color:var(--accent);">⚠️ Veritabanından projeler yüklenirken hata oluştu.</p>`;
-        console.error(error);
+
+      } catch (firebaseHata) {
+        console.warn('Firebase başarısız, JSON yedek deneniyor...', firebaseHata);
+
+        try {
+          tümProjeler = await jsondenYukle();
+          fallbackBanner.classList.add('goster'); // Kullanıcıya bildir
+          projeleriFiltreleVeListele();
+        } catch (jsonHata) {
+          console.error('JSON yedek de başarısız:', jsonHata);
+          container.innerHTML = `<p class="yukleniyor" style="color:var(--accent);">
+            ⚠️ Projeler yüklenemedi. Lütfen sayfayı yenileyin.
+          </p>`;
+        }
       }
     }
 
-    // UX Dinamik Event Listeners
-    searchInput.addEventListener('input', (e) => {
+    // ── Event Listeners ──────────────────────────────────
+    searchInput.addEventListener('input', e => {
       aramaMetni = e.target.value.toLowerCase();
       projeleriFiltreleVeListele();
     });
 
     filterBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
+      btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         aktifKategori = btn.getAttribute('data-filter');
