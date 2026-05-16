@@ -163,3 +163,72 @@ if (hamburger && mobileMenu) {
     }
   });
 }
+
+// =============================================
+// OPENWEATHER API - HAVA DURUMU WIDGET'I
+// =============================================
+document.addEventListener("DOMContentLoaded", () => {
+  // Widget HTML'ini sayfaya enjekte et (Tüm sayfalarda otomatik çıkar)
+  const widgetHTML = `
+    <div id="weather-widget" class="weather-widget fade-up visible">
+      <span style="color: var(--muted); font-size: 0.7rem;">Konum aranıyor...</span>
+    </div>
+  `;
+  document.body.insertAdjacentHTML("afterbegin", widgetHTML);
+
+  const weatherWidget = document.getElementById('weather-widget');
+  const API_KEY = "b2140358f68f3d26c20d7697a0eb69df";
+
+  // API'den veriyi çeken fonksiyon
+  async function getWeather(lat, lon) {
+    try {
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=tr`;
+      const response = await fetch(url);
+      
+      if (!response.ok) throw new Error("Hava durumu verisi alınamadı");
+      
+      const data = await response.json();
+      
+      const temp = Math.round(data.main.temp);
+      const desc = data.weather[0].description;
+      const city = data.name;
+      // OpenWeather'ın kendi ikonlarını kullanıyoruz
+      const iconUrl = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+
+      // Kelimelerin ilk harfini büyütme (Örn: "açık gökyüzü" -> "Açık Gökyüzü")
+      const descCapitalized = desc.charAt(0).toUpperCase() + desc.slice(1);
+
+      weatherWidget.innerHTML = `
+        <img src="${iconUrl}" alt="${desc}" class="weather-icon" />
+        <div class="weather-info">
+          <strong>${city}</strong>
+          <span>${temp}°C</span>
+          <span style="color: var(--muted); margin-left: 0.2rem;">| ${descCapitalized}</span>
+        </div>
+      `;
+    } catch (error) {
+      weatherWidget.innerHTML = `<span style="color: var(--accent);">⚠️ Hava durumu yüklenemedi</span>`;
+      console.error(error);
+    }
+  }
+
+  // Konum izni reddedilirse veya hata olursa varsayılan koordinatları kullan
+  function useFallbackLocation() {
+    getWeather(39.1458, 34.1639); 
+  }
+
+  // Kullanıcının konumunu al
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        getWeather(position.coords.latitude, position.coords.longitude);
+      },
+      (error) => {
+        console.warn("Konum izni verilmedi, varsayılan konum gösteriliyor.");
+        useFallbackLocation();
+      }
+    );
+  } else {
+    useFallbackLocation();
+  }
+});
