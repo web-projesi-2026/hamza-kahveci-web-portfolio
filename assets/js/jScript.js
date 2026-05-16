@@ -228,23 +228,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Konum izni reddedilirse varsayılan olarak Kırşehir koordinatlarını kullan
-  function useFallbackLocation() {
-    getWeather(39.1458, 34.1639); 
+  // Tarayıcı konumu bulamazsa devreye girecek B Planı (IP API)
+  async function getLocationFromIP() {
+    try {
+      // Ücretsiz ve key gerektirmeyen IP konum servisi
+      const response = await fetch('https://get.geojs.io/v1/ip/geo.json');
+      if (!response.ok) throw new Error("IP konumu alınamadı");
+      
+      const data = await response.json();
+      // IP'den dönen enlem ve boylamı hava durumu API'sine gönder
+      getWeather(data.latitude, data.longitude);
+    } catch (error) {
+      console.warn("IP konumu da başarısız. Kırşehir gösteriliyor.");
+      getWeather(39.1458, 34.1639); 
+    }
   }
 
-  // Kullanıcının konumunu al
+  // Kullanıcının konumunu almayı dene
   if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        // A Planı: Tarayıcı konumu başarıyla buldu
         getWeather(position.coords.latitude, position.coords.longitude);
       },
       (error) => {
-        console.warn("Konum izni verilmedi, varsayılan konum gösteriliyor.");
-        useFallbackLocation();
-      }
+        // Hata oldu veya zaman aşımına uğradı -> B Planına (IP) geç
+        console.warn("Tarayıcı konumu bulamadı, IP üzerinden aranıyor...");
+        getLocationFromIP();
+      },
+      { timeout: 4000 } // 4 saniye içinde bulamazsa B planına geç
     );
   } else {
-    useFallbackLocation();
+    // Tarayıcı konum desteklemiyorsa direkt B planına geç
+    getLocationFromIP();
   }
 });
