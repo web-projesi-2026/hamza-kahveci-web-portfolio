@@ -176,7 +176,7 @@
       container.innerHTML = '';
       
       const filtrelenmiş = tümProjeler.filter(proje => {
-        const kategoriUyum = aktifKategori === 'all' ||切换proje.category === aktifKategori;
+        const kategoriUyum = aktifKategori === 'all' || proje.category === aktifKategori;
         const aramaUyum = proje.title.toLowerCase().includes(aramaMetni) || 
                           proje.desc.toLowerCase().includes(aramaMetni);
         return kategoriUyum && aramaUyum;
