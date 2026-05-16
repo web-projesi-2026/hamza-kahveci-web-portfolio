@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yönetim Paneli — Hamza Kahveci</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    .admin-form-box {
+      max-width: 500px;
+      margin: 2rem auto;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      border-radius: 8px;
+    }
+    .hidden { display: none !important; }
+    .logout-btn { background: #333; color: #fff; margin-bottom: 2rem; }
+    .logout-btn:hover { background: #555; }
+    select.form-input { appearance: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="../index.html">HK<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html#hakkimda">Hakkımda</a></li>
+      <li><a href="../index.html#beceriler">Beceriler</a></li>
+      <li><a href="../index.html#hobiler">Hobiler</a></li>
+      <li><a href="projects.html">Projeler</a></li>
+      <li><a href="contact.html">İletişim</a></li>
+    </ul>
+  </nav>
+
+  <section style="padding-top: 8rem; min-height: 80vh;">
+    <div id="login-section" class="fade-up visible">
+      <div class="section-label">// Admin</div>
+      <h1 class="section-title" style="margin-bottom: 1rem;">Giriş Yap</h1>
+      <div class="admin-form-box">
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label" for="login-email">E-posta</label>
+          <input type="email" id="login-email" class="form-input" placeholder="ornek@mail.com" required />
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label" for="login-password">Şifre</label>
+          <input type="password" id="login-password" class="form-input" placeholder="••••••••" required />
+        </div>
+        <button id="btn-login" class="btn btn-primary" style="width: 100%; justify-content: center;">Giriş Yap →</button>
+      </div>
+    </div>
+
+    <div id="panel-section" class="hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <div class="section-label">// Yönetim Paneli</div>
+          <h1 class="section-title" style="margin-bottom: 1rem;">Yeni Proje Ekle</h1>
+        </div>
+        <button id="btn-logout" class="btn logout-btn">Oturumu Kapat</button>
+      </div>
+
+      <div class="contact-form-wrap fade-up visible" style="margin-top: 2rem;">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="p-title">Proje Adı</label>
+            <input type="text" id="p-title" class="form-input" placeholder="Örn: Akıllı Kütüphane" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="p-category">Kategori</label>
+            <select id="p-category" class="form-input" required>
+              <option value="Web">Web Geliştirme</option>
+              <option value="Masaüstü">Masaüstü Uygulama</option>
+              <option value="Tasarım">Dijital Tasarım</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="p-tags">Teknolojiler (Virgülle ayırın)</label>
+            <input type="text" id="p-tags" class="form-input" placeholder="Örn: C#, SQLite, EF Core" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="p-status">Proje Durumu</label>
+            <select id="p-status" class="form-input" required>
+              <option value="canlı">Canlıda</option>
+              <option value="geliştiriliyor">Geliştiriliyor</option>
+              <option value="planlanıyor">Planlanıyor</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="p-link">Proje Linki (Yoksa boş bırakın)</label>
+          <input type="url" id="p-link" class="form-input" placeholder="https://github.com/..." />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="p-desc">Proje Açıklaması</label>
+          <textarea id="p-desc" class="form-input form-textarea" rows="5" placeholder="Proje detaylarını yazın..." required></textarea>
+        </div>
+
+        <button id="btn-add-project" class="btn btn-primary" style="width: fit-content;">Proje Ekle +</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Hamza Kahveci — Tüm hakları saklıdır.</p>
+  </footer>
+
+  <script type="module">
+    import { auth, db } from "../assets/js/firebase-config.js";
+    import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const loginSection = document.getElementById("login-section");
+    const panelSection = document.getElementById("panel-section");
+
+    // Oturum Durumu Kontrolü
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loginSection.classList.add("hidden");
+        panelSection.classList.remove("hidden");
+      } else {
+        loginSection.classList.remove("hidden");
+        panelSection.classList.add("hidden");
+      }
+    });
+
+    // Giriş Yapma İşlemi
+    document.getElementById("btn-login").addEventListener("click", async () => {
+      const email = document.getElementById("login-email").value;
+      const password = document.getElementById("login-password").value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("Giriş başarılı!");
+      } catch (error) {
+        alert("Hata: Bilgiler geçersiz veya yetkiniz yok.");
+        console.error(error);
+      }
+    });
+
+    // Çıkış Yapma İşlemi
+    document.getElementById("btn-logout").addEventListener("click", async () => {
+      await signOut(auth);
+      alert("Oturum kapatıldı.");
+    });
+
+    // Veritabanına Veri Ekleme İşlemi
+    document.getElementById("btn-add-project").addEventListener("click", async () => {
+      const title = document.getElementById("p-title").value;
+      const category = document.getElementById("p-category").value;
+      const tagsInput = document.getElementById("p-tags").value;
+      const status = document.getElementById("p-status").value;
+      const link = document.getElementById("p-link").value || null;
+      const desc = document.getElementById("p-desc").value;
+
+      if(!title || !tagsInput || !desc) {
+        alert("Lütfen gerekli alanları doldurun.");
+        return;
+      }
+
+      // Virgülle ayrılan etiketleri diziye çevirme ve temizleme
+      const tags = tagsInput.split(",").map(tag => tag.trim()).filter(tag => tag !== "");
+
+      try {
+        await addDoc(collection(db, "projects"), {
+          title,
+          category,
+          tags,
+          durum: status,
+          link,
+          desc,
+          createdAt: serverTimestamp()
+        });
+
+        alert("Proje başarıyla veritabanına eklendi!");
+        // Formu temizle
+        document.getElementById("p-title").value = "";
+        document.getElementById("p-tags").value = "";
+        document.getElementById("p-link").value = "";
+        document.getElementById("p-desc").value = "";
+      } catch (error) {
+        alert("Veri eklenirken hata oluştu.");
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>
