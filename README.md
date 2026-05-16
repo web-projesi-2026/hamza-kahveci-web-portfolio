@@ -12,8 +12,9 @@
 |-------|----------|
 | `index.html` | Ana sayfa — Hakkımda, Beceriler, Hobiler |
 | `pages/about.html` | Detaylı hakkımda sayfası |
-| `pages/projects.html` | Projelerim |
-| `pages/contact.html` | İletişim bilgileri |
+| `pages/projects.html` | Projeler — Arama, filtreleme ve favori sistemi |
+| `pages/contact.html` | İletişim bilgileri ve doğrulamalı form |
+| `pages/admin.html` | Proje yönetim paneli (giriş korumalı) |
 
 ---
 
@@ -21,9 +22,12 @@
 
 | Teknoloji | Kullanım Amacı |
 |-----------|----------------|
-| HTML | Sayfa yapısı ve içerik |
-| CSS | Tema, stil ve animasyonlar |
-| JavaScript | Etkileşim ve tema geçişi |
+| HTML5 | Sayfa yapısı ve içerik |
+| CSS3 | Tema, stil ve animasyonlar |
+| JavaScript (ES6+) | Etkileşim, tema geçişi ve dinamik içerik |
+| Firebase Firestore | Proje verilerinin veritabanında saklanması |
+| Firebase Auth | Admin paneli için kullanıcı girişi |
+| OpenWeather API | Anlık hava durumu widget'ı |
 
 > Geliştirme sürecinde **Claude (Sonnet 4.6)** yapay zekasından yararlanılmıştır.
 
@@ -31,31 +35,82 @@
 
 ## ✨ Özellikler
 
+### Kullanıcı Deneyimi
 - 🎨 **İki tema desteği** — Crimson + Beyaz / Crimson + Siyah
-- 📱 **Mobil uyumlu** tasarım
-- ⚡ **Scroll animasyonları**
-- 🖼️ **GitHub profil fotoğrafı** entegrasyonu
+- 📱 **Mobil uyumlu** tasarım ve hamburger menü
+- ⚡ **Scroll animasyonları** (Intersection Observer)
 - 💾 **Tema tercihi kaydedilir** (localStorage)
-- 🎨 **Arkaplan desteği**
+- ☁️ **Anlık hava durumu** widget'ı (konum bazlı, önbellekli)
+
+### Projeler Sayfası
+- 🔍 **Canlı arama** — proje adı ve açıklamada anlık arama
+- 🗂️ **Kategori filtreleme** — Web, Masaüstü, Tasarım
+- ❤️ **Favori sistemi** — localStorage ile kalıcı
+- 🔄 **JSON yedek sistemi** — Firebase erişilemezse `projects.json` devreye girer
+
+### Admin Paneli
+- 🔐 **Firebase Authentication** ile giriş koruması
+- ➕ Proje **ekleme**
+- ✏️ Proje **güncelleme**
+- 🗑️ Proje **silme**
+- 📋 Mevcut projeleri **listeleme**
+
+### Kod Kalitesi
+- 🧩 **`components.js`** — Nav, mobil menü ve footer tek yerden yönetilir, tüm sayfalara otomatik enjekte edilir
+- ♻️ Kod tekrarı minimize edilmiştir
 
 ---
 
 ## 📁 Dosya Yapısı
+
 ```
 ├── index.html
 ├── README.md
 ├── assets/
 │   ├── css/
 │   │   └── style.css
+│   ├── data/
+│   │   └── projects.json       ← Firebase için yedek veri kaynağı
 │   ├── img/
-│   │   └── bg_img.png
+│   │   ├── bg_img.png
+│   │   └── favicon.ico
 │   └── js/
-│       └── jScript.js
+│       ├── components.js       ← Ortak nav/footer bileşenleri
+│       ├── firebase-config.js  ← Firebase bağlantı ayarları
+│       └── jScript.js          ← Genel etkileşimler ve widget'lar
 └── pages/
     ├── about.html
+    ├── admin.html
     ├── contact.html
     └── projects.html
 ```
+
+---
+
+## 🗄️ Veritabanı İşlemleri
+
+Firebase Firestore üzerinde aşağıdaki CRUD işlemleri gerçekleştirilmektedir:
+
+| İşlem | Sayfa | Açıklama |
+|-------|-------|----------|
+| **Listeleme** | `projects.html` | Tüm projeler kartlar halinde listelenir |
+| **Ekleme** | `admin.html` | Yeni proje Firebase'e kaydedilir |
+| **Güncelleme** | `admin.html` | Mevcut proje bilgileri düzenlenir |
+| **Silme** | `admin.html` | Proje kalıcı olarak silinir |
+| **Giriş** | `admin.html` | Firebase Auth ile kimlik doğrulama |
+
+---
+
+## 🌐 API Kullanımı
+
+### OpenWeather API
+- Kullanıcının tarayıcı konumuna göre anlık hava durumu gösterilir.
+- Tarayıcı konumu reddedilirse IP adresi üzerinden konum tespit edilir.
+- Veriler 30 dakika boyunca `sessionStorage`'da önbelleğe alınır, gereksiz API çağrısı yapılmaz.
+
+### JSON Fallback
+- `assets/data/projects.json` dosyası Firebase erişilemez olduğunda otomatik olarak devreye girer.
+- Kullanıcı, sayfada gösterilen uyarı bandı ile bu durumdan haberdar edilir.
 
 ---
 
