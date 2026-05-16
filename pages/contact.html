@@ -98,10 +98,19 @@
     </div>
   </section>
 
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
   <script src="../assets/js/components.js"></script>
   <script src="../assets/js/jScript.js"></script>
   <script>
     (function () {
+      // ── EmailJS Başlat ──────────────────────────────────
+      emailjs.init('t-E42pdhUVTByy9zl');
+
+      const SERVICE_ID  = 'service_kcweezv';
+      const TEMPLATE_ID = 'template_hedxw4i';
+
       const nameInput    = document.getElementById('name');
       const emailInput   = document.getElementById('email');
       const subjectInput = document.getElementById('subject');
@@ -172,7 +181,7 @@
         });
       });
 
-      submitBtn.addEventListener('click', () => {
+      submitBtn.addEventListener('click', async () => {
         const v1 = validateField(nameInput,    'name-error',    rules.name);
         const v2 = validateField(emailInput,   'email-error',   rules.email);
         const v3 = validateField(subjectInput, 'subject-error', rules.subject);
@@ -184,13 +193,32 @@
           return;
         }
 
+        // Gönderiliyor durumu
         submitBtn.disabled = true;
         submitBtn.textContent = 'Gönderiliyor...';
-        setTimeout(() => {
+
+        // EmailJS'e gönder — template değişken isimleri şunlar:
+        // {{from_name}}, {{from_email}}, {{subject}}, {{message}}
+        const templateParams = {
+          from_name:  nameInput.value.trim(),
+          from_email: emailInput.value.trim(),
+          subject:    subjectInput.value.trim(),
+          message:    msgInput.value.trim()
+        };
+
+        try {
+          await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams);
+          // Başarılı
           formWrap.style.display = 'none';
           successBox.classList.add('visible');
           successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 800);
+        } catch (error) {
+          // Hata durumu
+          console.error('EmailJS hatası:', error);
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Gönder →';
+          alert('Mesaj gönderilemedi. Lütfen tekrar deneyin veya direkt e-posta ile ulaşın.');
+        }
       });
     })();
   </script>
