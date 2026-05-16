@@ -1141,13 +1141,12 @@ img {
 }
 
 /* =============================================
-   WEATHER WIDGET
+   WEATHER WIDGET (GÜNCELLENMİŞ SOLA DAYALI HALİ)
    ============================================= */
 .weather-widget {
   position: fixed;
-  top: 1.2rem;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 1.05rem; /* Logoyla dikeyde tam hizalanması için ince ayar */
+  left: 8.5rem; /* Sol menü boşluğu (4rem) + HK logosu + biraz ekstra boşluk */
   z-index: 1000;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1168,25 +1167,14 @@ img {
 .weather-widget:hover {
   border-color: var(--accent);
   box-shadow: 0 4px 20px var(--glow);
-  transform: translateX(-50%) translateY(-2px);
+  transform: translateY(-2px); /* Sadece hafifçe yukarı kalkma efekti */
 }
 
-.weather-icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-}
-
-.weather-info {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-/* Mobilde navigasyon ile çakışmaması için biraz küçültelim */
+/* Mobilde menü boşlukları daraldığı için widget'ı da sola yaklaştırıyoruz */
 @media (max-width: 768px) {
   .weather-widget {
-    top: 0.8rem;
+    top: 0.85rem;
+    left: 5rem; 
     padding: 0.25rem 0.75rem;
     font-size: 0.7rem;
   }
