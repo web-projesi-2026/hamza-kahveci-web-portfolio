@@ -18,6 +18,39 @@
     .logout-btn { background: #333; color: #fff; margin-bottom: 2rem; }
     .logout-btn:hover { background: #555; }
     select.form-input { appearance: none; cursor: pointer; }
+    
+    /* Admin Tablo Tasarımı */
+    .admin-table-wrapper {
+      margin-top: 4rem;
+      overflow-x: auto;
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      color: var(--text);
+      min-width: 600px;
+    }
+    .admin-table th, .admin-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .admin-table th {
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .action-btn {
+      background: none; border: none; cursor: pointer;
+      font-size: 0.9rem; margin-right: 0.8rem;
+      font-family: 'DM Mono', monospace;
+    }
+    .btn-edit { color: #3498db; }
+    .btn-edit:hover { text-decoration: underline; }
+    .btn-delete { color: var(--accent); }
+    .btn-delete:hover { text-decoration: underline; }
+    #cancel-edit-btn { background: #555; color: white; display: none; }
   </style>
 </head>
 <body>
@@ -54,12 +87,14 @@
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
         <div>
           <div class="section-label">// Yönetim Paneli</div>
-          <h1 class="section-title" style="margin-bottom: 1rem;">Yeni Proje Ekle</h1>
+          <h1 class="section-title" id="form-main-title" style="margin-bottom: 1rem;">Yeni Proje Ekle</h1>
         </div>
         <button id="btn-logout" class="btn logout-btn">Oturumu Kapat</button>
       </div>
 
-      <div class="contact-form-wrap fade-up visible" style="margin-top: 2rem;">
+      <div class="contact-form-wrap fade-up visible" style="margin-top: 1rem;">
+        <input type="hidden" id="edit-id" value="" />
+        
         <div class="form-row">
           <div class="form-group">
             <label class="form-label" for="p-title">Proje Adı</label>
@@ -97,11 +132,32 @@
 
         <div class="form-group">
           <label class="form-label" for="p-desc">Proje Açıklaması</label>
-          <textarea id="p-desc" class="form-input form-textarea" rows="5" placeholder="Proje detaylarını yazın..." required></textarea>
+          <textarea id="p-desc" class="form-input form-textarea" rows="4" placeholder="Proje detaylarını yazın..." required></textarea>
         </div>
 
-        <button id="btn-add-project" class="btn btn-primary" style="width: fit-content;">Proje Ekle +</button>
+        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+          <button id="btn-save-project" class="btn btn-primary">Proje Ekle +</button>
+          <button id="cancel-edit-btn" class="btn">İptal</button>
+        </div>
       </div>
+
+      <div class="admin-table-wrapper fade-up visible">
+        <h2 style="font-family: 'Syne'; margin-bottom: 1rem;">Mevcut Projeler</h2>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Proje Adı</th>
+              <th>Kategori</th>
+              <th>Durum</th>
+              <th>İşlemler</th>
+            </tr>
+          </thead>
+          <tbody id="admin-projects-tbody">
+            <tr><td colspan="4" style="text-align: center;">Projeler yükleniyor...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
   </section>
 
@@ -109,47 +165,123 @@
     <p>© 2026 Hamza Kahveci — Tüm hakları saklıdır.</p>
   </footer>
 
+  <script src="../assets/js/jScript.js"></script>
+
   <script type="module">
     import { auth, db } from "../assets/js/firebase-config.js";
     import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const loginSection = document.getElementById("login-section");
     const panelSection = document.getElementById("panel-section");
+    const tbody = document.getElementById("admin-projects-tbody");
 
-    // Oturum Durumu Kontrolü
+    // Oturum Durumu
     onAuthStateChanged(auth, (user) => {
       if (user) {
         loginSection.classList.add("hidden");
         panelSection.classList.remove("hidden");
+        projeleriGetir(); // Giriş yapınca tabloyu doldur
       } else {
         loginSection.classList.remove("hidden");
         panelSection.classList.add("hidden");
       }
     });
 
-    // Giriş Yapma İşlemi
     document.getElementById("btn-login").addEventListener("click", async () => {
       const email = document.getElementById("login-email").value;
       const password = document.getElementById("login-password").value;
-
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        alert("Giriş başarılı!");
-      } catch (error) {
-        alert("Hata: Bilgiler geçersiz veya yetkiniz yok.");
-        console.error(error);
-      }
+      } catch (error) { alert("Hata: Bilgiler geçersiz."); }
     });
 
-    // Çıkış Yapma İşlemi
     document.getElementById("btn-logout").addEventListener("click", async () => {
       await signOut(auth);
-      alert("Oturum kapatıldı.");
     });
 
-    // Veritabanına Veri Ekleme İşlemi
-    document.getElementById("btn-add-project").addEventListener("click", async () => {
+    // 1. VERİLERİ TABLOYA ÇEKME (READ)
+    async function projeleriGetir() {
+      tbody.innerHTML = '<tr><td colspan="4">Yükleniyor...</td></tr>';
+      try {
+        const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        tbody.innerHTML = '';
+        
+        if(snapshot.empty) {
+          tbody.innerHTML = '<tr><td colspan="4">Henüz proje eklenmemiş.</td></tr>';
+          return;
+        }
+
+        snapshot.forEach(d => {
+          const data = d.data();
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><strong>${data.title}</strong></td>
+            <td>${data.category}</td>
+            <td><span class="project-tag ${data.durum === 'canlı' ? 'canli' : ''}">${data.durum}</span></td>
+            <td>
+              <button class="action-btn btn-edit" data-id="${d.id}">Düzenle</button>
+              <button class="action-btn btn-delete" data-id="${d.id}">Sil</button>
+            </td>
+          `;
+          
+          // Silme Eventi
+          tr.querySelector('.btn-delete').addEventListener('click', () => projeSil(d.id));
+          
+          // Düzenleme Eventi
+          tr.querySelector('.btn-edit').addEventListener('click', () => duzenlemeModunaGec(d.id, data));
+
+          tbody.appendChild(tr);
+        });
+      } catch (error) { console.error(error); }
+    }
+
+    // 2. VERİ SİLME (DELETE)
+    async function projeSil(id) {
+      if(confirm("Bu projeyi silmek istediğinize emin misiniz?")) {
+        try {
+          await deleteDoc(doc(db, "projects", id));
+          projeleriGetir(); // Tabloyu yenile
+        } catch (error) { alert("Silinirken hata oluştu."); }
+      }
+    }
+
+    // 3. DÜZENLEME MODUNA GEÇİŞ
+    function duzenlemeModunaGec(id, data) {
+      document.getElementById("edit-id").value = id;
+      document.getElementById("p-title").value = data.title;
+      document.getElementById("p-category").value = data.category;
+      document.getElementById("p-tags").value = data.tags.join(", ");
+      document.getElementById("p-status").value = data.durum;
+      document.getElementById("p-link").value = data.link || "";
+      document.getElementById("p-desc").value = data.desc;
+
+      document.getElementById("form-main-title").textContent = "Projeyi Güncelle";
+      document.getElementById("btn-save-project").textContent = "Güncelle ✓";
+      document.getElementById("cancel-edit-btn").style.display = "block";
+      
+      // Sayfayı yukarı kaydır
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // İptal Butonu
+    document.getElementById("cancel-edit-btn").addEventListener("click", formuSifirla);
+
+    function formuSifirla() {
+      document.getElementById("edit-id").value = "";
+      document.getElementById("p-title").value = "";
+      document.getElementById("p-tags").value = "";
+      document.getElementById("p-link").value = "";
+      document.getElementById("p-desc").value = "";
+      document.getElementById("form-main-title").textContent = "Yeni Proje Ekle";
+      document.getElementById("btn-save-project").textContent = "Proje Ekle +";
+      document.getElementById("cancel-edit-btn").style.display = "none";
+    }
+
+    // 4. EKLEME VEYA GÜNCELLEME (CREATE & UPDATE)
+    document.getElementById("btn-save-project").addEventListener("click", async () => {
+      const editId = document.getElementById("edit-id").value;
       const title = document.getElementById("p-title").value;
       const category = document.getElementById("p-category").value;
       const tagsInput = document.getElementById("p-tags").value;
@@ -157,35 +289,25 @@
       const link = document.getElementById("p-link").value || null;
       const desc = document.getElementById("p-desc").value;
 
-      if(!title || !tagsInput || !desc) {
-        alert("Lütfen gerekli alanları doldurun.");
-        return;
-      }
+      if(!title || !tagsInput || !desc) { alert("Gerekli alanları doldurun."); return; }
 
-      // Virgülle ayrılan etiketleri diziye çevirme ve temizleme
-      const tags = tagsInput.split(",").map(tag => tag.trim()).filter(tag => tag !== "");
+      const tags = tagsInput.split(",").map(t => t.trim()).filter(t => t !== "");
+      const projectData = { title, category, tags, durum: status, link, desc };
 
       try {
-        await addDoc(collection(db, "projects"), {
-          title,
-          category,
-          tags,
-          durum: status,
-          link,
-          desc,
-          createdAt: serverTimestamp()
-        });
-
-        alert("Proje başarıyla veritabanına eklendi!");
-        // Formu temizle
-        document.getElementById("p-title").value = "";
-        document.getElementById("p-tags").value = "";
-        document.getElementById("p-link").value = "";
-        document.getElementById("p-desc").value = "";
-      } catch (error) {
-        alert("Veri eklenirken hata oluştu.");
-        console.error(error);
-      }
+        if (editId) {
+          // Güncelleme İşlemi
+          await updateDoc(doc(db, "projects", editId), projectData);
+          alert("Proje başarıyla güncellendi!");
+        } else {
+          // Yeni Ekleme İşlemi (Zaman damgası sadece yeni eklerken lazım)
+          projectData.createdAt = serverTimestamp();
+          await addDoc(collection(db, "projects"), projectData);
+          alert("Proje başarıyla eklendi!");
+        }
+        formuSifirla();
+        projeleriGetir(); // Tabloyu yenile
+      } catch (error) { console.error(error); alert("İşlem sırasında hata oluştu."); }
     });
   </script>
 </body>
