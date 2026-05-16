@@ -165,10 +165,9 @@ if (hamburger && mobileMenu) {
 }
 
 // =============================================
-// OPENWEATHER API - HAVA DURUMU WIDGET'I
+// OPENWEATHER API - HAVA DURUMU WIDGET'I (ÖNBELLEK DESTEKLİ)
 // =============================================
 document.addEventListener("DOMContentLoaded", () => {
-  // Widget HTML'ini sayfaya enjekte et (Tüm sayfalarda otomatik çıkar)
   const widgetHTML = `
     <div id="weather-widget" class="weather-widget fade-up visible">
       <span style="color: var(--muted); font-size: 0.7rem;">Konum aranıyor...</span>
@@ -179,7 +178,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const weatherWidget = document.getElementById('weather-widget');
   const API_KEY = "b2140358f68f3d26c20d7697a0eb69df";
 
-  // API'den veriyi çeken fonksiyon
+  // 1. HAFIZA KONTROLÜ: Veri daha önce çekilmiş mi?
+  const cachedWeather = sessionStorage.getItem('weatherCache');
+  const cacheTime = sessionStorage.getItem('weatherCacheTime');
+  const now = new Date().getTime();
+
+  // Eğer hafızada veri varsa ve üzerinden 30 dakikadan (1800000 ms) az zaman geçmişse, doğrudan onu kullan
+  if (cachedWeather && cacheTime && (now - cacheTime < 1800000)) {
+    weatherWidget.innerHTML = cachedWeather;
+    return; // İşlemi burada kes, tekrar konum sorma veya API'ye bağlanma
+  }
+
+  // 2. HAFIZADA YOKSA: API'den veriyi çek
   async function getWeather(lat, lon) {
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=tr`;
@@ -192,13 +202,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const temp = Math.round(data.main.temp);
       const desc = data.weather[0].description;
       const city = data.name;
-      // OpenWeather'ın kendi ikonlarını kullanıyoruz
       const iconUrl = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
-
-      // Kelimelerin ilk harfini büyütme (Örn: "açık gökyüzü" -> "Açık Gökyüzü")
       const descCapitalized = desc.charAt(0).toUpperCase() + desc.slice(1);
 
-      weatherWidget.innerHTML = `
+      // Ekrana basılacak son HTML yapısı
+      const finalHTML = `
         <img src="${iconUrl}" alt="${desc}" class="weather-icon" />
         <div class="weather-info">
           <strong>${city}</strong>
@@ -206,13 +214,21 @@ document.addEventListener("DOMContentLoaded", () => {
           <span style="color: var(--muted); margin-left: 0.2rem;">| ${descCapitalized}</span>
         </div>
       `;
+
+      // Widget'ı güncelle
+      weatherWidget.innerHTML = finalHTML;
+
+      // 3. HAFIZAYA KAYDET: Bir sonraki sayfa geçişinde kullanmak üzere sakla
+      sessionStorage.setItem('weatherCache', finalHTML);
+      sessionStorage.setItem('weatherCacheTime', now.toString());
+
     } catch (error) {
       weatherWidget.innerHTML = `<span style="color: var(--accent);">⚠️ Hava durumu yüklenemedi</span>`;
       console.error(error);
     }
   }
 
-  // Konum izni reddedilirse veya hata olursa varsayılan koordinatları kullan
+  // Konum izni reddedilirse varsayılan olarak Kırşehir koordinatlarını kullan
   function useFallbackLocation() {
     getWeather(39.1458, 34.1639); 
   }
