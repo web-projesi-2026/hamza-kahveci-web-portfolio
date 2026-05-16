@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yönetim Paneli — Hamza Kahveci</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+  <style>
+    .admin-form-box {
+      max-width: 500px;
+      margin: 2rem auto;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      border-radius: 8px;
+    }
+    .hidden { display: none !important; }
+    .logout-btn { background: #333; color: #fff; margin-bottom: 2rem; }
+    .logout-btn:hover { background: #555; }
+    select.form-input { appearance: none; cursor: pointer; }
+
+    .admin-table-wrapper { margin-top: 4rem; overflow-x: auto; }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      color: var(--text);
+      min-width: 600px;
+    }
+    .admin-table th, .admin-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .admin-table th {
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .action-btn {
+      background: none; border: none; cursor: pointer;
+      font-size: 0.9rem; margin-right: 0.8rem;
+      font-family: 'DM Mono', monospace;
+    }
+    .btn-edit  { color: #3498db; }
+    .btn-edit:hover  { text-decoration: underline; }
+    .btn-delete { color: var(--accent); }
+    .btn-delete:hover { text-decoration: underline; }
+    #cancel-edit-btn { background: #555; color: white; display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Nav, mobile-menu ve footer components.js tarafından otomatik eklenir -->
+
+  <section style="padding-top: 8rem; min-height: 80vh;">
+    <div id="login-section" class="fade-up visible">
+      <div class="section-label">// Admin</div>
+      <h1 class="section-title" style="margin-bottom: 1rem;">Giriş Yap</h1>
+      <div class="admin-form-box">
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label" for="login-email">E-posta</label>
+          <input type="email" id="login-email" class="form-input" placeholder="ornek@mail.com" required />
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label" for="login-password">Şifre</label>
+          <input type="password" id="login-password" class="form-input" placeholder="••••••••" required />
+        </div>
+        <button id="btn-login" class="btn btn-primary" style="width: 100%; justify-content: center;">Giriş Yap →</button>
+      </div>
+    </div>
+
+    <div id="panel-section" class="hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <div class="section-label">// Yönetim Paneli</div>
+          <h1 class="section-title" id="form-main-title" style="margin-bottom: 1rem;">Yeni Proje Ekle</h1>
+        </div>
+        <button id="btn-logout" class="btn logout-btn">Oturumu Kapat</button>
+      </div>
+
+      <div class="contact-form-wrap fade-up visible" style="margin-top: 1rem;">
+        <input type="hidden" id="edit-id" value="" />
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="p-title">Proje Adı</label>
+            <input type="text" id="p-title" class="form-input" placeholder="Örn: Akıllı Kütüphane" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="p-category">Kategori</label>
+            <select id="p-category" class="form-input" required>
+              <option value="Web">Web Geliştirme</option>
+              <option value="Masaüstü">Masaüstü Uygulama</option>
+              <option value="Tasarım">Dijital Tasarım</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="p-tags">Teknolojiler (Virgülle ayırın)</label>
+            <input type="text" id="p-tags" class="form-input" placeholder="Örn: C#, SQLite, EF Core" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="p-status">Proje Durumu</label>
+            <select id="p-status" class="form-input" required>
+              <option value="canlı">Canlıda</option>
+              <option value="geliştiriliyor">Geliştiriliyor</option>
+              <option value="planlanıyor">Planlanıyor</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="p-link">Proje Linki (Yoksa boş bırakın)</label>
+          <input type="url" id="p-link" class="form-input" placeholder="https://github.com/..." />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="p-desc">Proje Açıklaması</label>
+          <textarea id="p-desc" class="form-input form-textarea" rows="4" placeholder="Proje detaylarını yazın..." required></textarea>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+          <button id="btn-save-project" class="btn btn-primary">Proje Ekle +</button>
+          <button id="cancel-edit-btn" class="btn">İptal</button>
+        </div>
+      </div>
+
+      <div class="admin-table-wrapper fade-up visible">
+        <h2 style="font-family: 'Syne'; margin-bottom: 1rem;">Mevcut Projeler</h2>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Proje Adı</th>
+              <th>Kategori</th>
+              <th>Durum</th>
+              <th>İşlemler</th>
+            </tr>
+          </thead>
+          <tbody id="admin-projects-tbody">
+            <tr><td colspan="4" style="text-align: center;">Projeler yükleniyor...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/jScript.js"></script>
+
+  <script type="module">
+    import { auth, db } from "../assets/js/firebase-config.js";
+    import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const loginSection = document.getElementById("login-section");
+    const panelSection = document.getElementById("panel-section");
+    const tbody        = document.getElementById("admin-projects-tbody");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loginSection.classList.add("hidden");
+        panelSection.classList.remove("hidden");
+        projeleriGetir();
+      } else {
+        loginSection.classList.remove("hidden");
+        panelSection.classList.add("hidden");
+      }
+    });
+
+    document.getElementById("btn-login").addEventListener("click", async () => {
+      const email    = document.getElementById("login-email").value;
+      const password = document.getElementById("login-password").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch { alert("Hata: Bilgiler geçersiz."); }
+    });
+
+    document.getElementById("btn-logout").addEventListener("click", () => signOut(auth));
+
+    async function projeleriGetir() {
+      tbody.innerHTML = '<tr><td colspan="4">Yükleniyor...</td></tr>';
+      try {
+        const q        = query(collection(db, "projects"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        tbody.innerHTML = '';
+
+        if (snapshot.empty) {
+          tbody.innerHTML = '<tr><td colspan="4">Henüz proje eklenmemiş.</td></tr>';
+          return;
+        }
+
+        snapshot.forEach(d => {
+          const data = d.data();
+          const tr   = document.createElement("tr");
+          tr.innerHTML = `
+            <td><strong>${data.title}</strong></td>
+            <td>${data.category}</td>
+            <td><span class="project-tag ${data.durum === 'canlı' ? 'canli' : ''}">${data.durum}</span></td>
+            <td>
+              <button class="action-btn btn-edit"   data-id="${d.id}">Düzenle</button>
+              <button class="action-btn btn-delete" data-id="${d.id}">Sil</button>
+            </td>`;
+          tr.querySelector('.btn-delete').addEventListener('click', () => projeSil(d.id));
+          tr.querySelector('.btn-edit').addEventListener('click',   () => duzenlemeModunaGec(d.id, data));
+          tbody.appendChild(tr);
+        });
+      } catch (error) { console.error(error); }
+    }
+
+    async function projeSil(id) {
+      if (confirm("Bu projeyi silmek istediğinize emin misiniz?")) {
+        try {
+          await deleteDoc(doc(db, "projects", id));
+          projeleriGetir();
+        } catch { alert("Silinirken hata oluştu."); }
+      }
+    }
+
+    function duzenlemeModunaGec(id, data) {
+      document.getElementById("edit-id").value    = id;
+      document.getElementById("p-title").value    = data.title;
+      document.getElementById("p-category").value = data.category;
+      document.getElementById("p-tags").value     = data.tags.join(", ");
+      document.getElementById("p-status").value   = data.durum;
+      document.getElementById("p-link").value     = data.link || "";
+      document.getElementById("p-desc").value     = data.desc;
+
+      document.getElementById("form-main-title").textContent       = "Projeyi Güncelle";
+      document.getElementById("btn-save-project").textContent      = "Güncelle ✓";
+      document.getElementById("cancel-edit-btn").style.display     = "block";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.getElementById("cancel-edit-btn").addEventListener("click", formuSifirla);
+
+    function formuSifirla() {
+      document.getElementById("edit-id").value                     = "";
+      document.getElementById("p-title").value                     = "";
+      document.getElementById("p-tags").value                      = "";
+      document.getElementById("p-link").value                      = "";
+      document.getElementById("p-desc").value                      = "";
+      document.getElementById("form-main-title").textContent       = "Yeni Proje Ekle";
+      document.getElementById("btn-save-project").textContent      = "Proje Ekle +";
+      document.getElementById("cancel-edit-btn").style.display     = "none";
+    }
+
+    document.getElementById("btn-save-project").addEventListener("click", async () => {
+      const editId   = document.getElementById("edit-id").value;
+      const title    = document.getElementById("p-title").value;
+      const category = document.getElementById("p-category").value;
+      const tagsInput = document.getElementById("p-tags").value;
+      const status   = document.getElementById("p-status").value;
+      const link     = document.getElementById("p-link").value || null;
+      const desc     = document.getElementById("p-desc").value;
+
+      if (!title || !tagsInput || !desc) { alert("Gerekli alanları doldurun."); return; }
+
+      const tags        = tagsInput.split(",").map(t => t.trim()).filter(Boolean);
+      const projectData = { title, category, tags, durum: status, link, desc };
+
+      try {
+        if (editId) {
+          await updateDoc(doc(db, "projects", editId), projectData);
+          alert("Proje başarıyla güncellendi!");
+        } else {
+          projectData.createdAt = serverTimestamp();
+          await addDoc(collection(db, "projects"), projectData);
+          alert("Proje başarıyla eklendi!");
+        }
+        formuSifirla();
+        projeleriGetir();
+      } catch (error) { console.error(error); alert("İşlem sırasında hata oluştu."); }
+    });
+  </script>
+</body>
+</html>

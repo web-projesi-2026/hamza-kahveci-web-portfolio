@@ -5,40 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>İletişim — Hamza Kahveci</title>
   <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+  <style>
+    .contact-page-inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
 
-  <nav>
-    <a class="nav-logo" href="../index.html">HK<span>.</span></a>
-    <ul class="nav-links">
-      <li><a href="../index.html#hakkimda">Hakkımda</a></li>
-      <li><a href="../index.html#beceriler">Beceriler</a></li>
-      <li><a href="../index.html#hobiler">Hobiler</a></li>
-      <li><a href="projects.html">Projeler</a></li>
-      <li><a href="contact.html">İletişim</a></li>
-    </ul>
-    <div class="nav-right">
-      <button class="theme-toggle" id="theme-toggle">
-        <span class="dot"></span>
-        <span id="theme-label">Koyu Tema</span>
-      </button>
-      <button class="hamburger" id="hamburger" aria-label="Menüyü aç">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-  </nav>
-
-  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Navigasyon Menüsü">
-    <a href="../index.html#hakkimda">Hakkımda</a>
-    <a href="../index.html#beceriler">Beceriler</a>
-    <a href="../index.html#hobiler">Hobiler</a>
-    <a href="projects.html">Projeler</a>
-    <a href="contact.html">İletişim</a>
-  </div>
+  <!-- Nav, mobile-menu ve footer components.js tarafından otomatik eklenir -->
 
   <section style="padding-top: 8rem;">
+  <div class="contact-page-inner">
     <div class="section-label fade-up">// İletişim</div>
     <h1 class="section-title fade-up">Bana Ulaş</h1>
 
@@ -79,7 +59,6 @@
       Mesaj Gönder
     </h2>
 
-    <!-- Başarı Mesajı -->
     <div class="form-success" id="form-success" role="alert" aria-live="polite">
       <span class="form-success-icon">✓</span>
       <div>
@@ -90,100 +69,56 @@
 
     <div class="contact-form-wrap fade-up" id="contact-form-wrap">
       <div class="form-row">
-        <!-- Ad Soyad -->
         <div class="form-group">
-          <label class="form-label" for="name">
-            Ad Soyad <span class="form-required">*</span>
-          </label>
-          <input
-            class="form-input"
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Adın ve soyadın"
-            required
-            autocomplete="name"
-            aria-describedby="name-error"
-          />
+          <label class="form-label" for="name">Ad Soyad <span class="form-required">*</span></label>
+          <input class="form-input" type="text" id="name" name="name"
+            placeholder="Adın ve soyadın" required autocomplete="name" aria-describedby="name-error" />
           <span class="form-error" id="name-error" role="alert" aria-live="polite"></span>
         </div>
-
-        <!-- E-posta -->
         <div class="form-group">
-          <label class="form-label" for="email">
-            E-posta <span class="form-required">*</span>
-          </label>
-          <input
-            class="form-input"
-            type="email"
-            id="email"
-            name="email"
-            placeholder="ornek@mail.com"
-            required
-            autocomplete="email"
-            aria-describedby="email-error"
-          />
+          <label class="form-label" for="email">E-posta <span class="form-required">*</span></label>
+          <input class="form-input" type="email" id="email" name="email"
+            placeholder="ornek@mail.com" required autocomplete="email" aria-describedby="email-error" />
           <span class="form-error" id="email-error" role="alert" aria-live="polite"></span>
         </div>
       </div>
 
-      <!-- Konu -->
       <div class="form-group">
-        <label class="form-label" for="subject">
-          Konu <span class="form-required">*</span>
-        </label>
-        <input
-          class="form-input"
-          type="text"
-          id="subject"
-          name="subject"
-          placeholder="Mesajının konusu nedir?"
-          required
-          aria-describedby="subject-error"
-        />
+        <label class="form-label" for="subject">Konu <span class="form-required">*</span></label>
+        <input class="form-input" type="text" id="subject" name="subject"
+          placeholder="Mesajının konusu nedir?" required aria-describedby="subject-error" />
         <span class="form-error" id="subject-error" role="alert" aria-live="polite"></span>
       </div>
 
-      <!-- Mesaj -->
       <div class="form-group">
-        <label class="form-label" for="message">
-          Mesaj <span class="form-required">*</span>
-        </label>
-        <textarea
-          class="form-input form-textarea"
-          id="message"
-          name="message"
-          placeholder="Mesajını buraya yaz..."
-          required
-          rows="6"
-          aria-describedby="message-error"
-        ></textarea>
+        <label class="form-label" for="message">Mesaj <span class="form-required">*</span></label>
+        <textarea class="form-input form-textarea" id="message" name="message"
+          placeholder="Mesajını buraya yaz..." required rows="6" aria-describedby="message-error"></textarea>
         <span class="form-error" id="message-error" role="alert" aria-live="polite"></span>
         <span class="form-char-count" id="char-count">0 / 1000</span>
       </div>
 
-      <!-- Gönder -->
       <div class="form-footer">
-        <span class="form-note">
-          <span class="form-required">*</span> ile işaretli alanlar zorunludur.
-        </span>
-        <button class="btn btn-primary form-submit" id="form-submit" type="button">
-          Gönder →
-        </button>
+        <span class="form-note"><span class="form-required">*</span> ile işaretli alanlar zorunludur.</span>
+        <button class="btn btn-primary form-submit" id="form-submit" type="button">Gönder →</button>
       </div>
     </div>
+  </div><!-- /.contact-page-inner -->
   </section>
 
-  <footer>
-    <p>© 2026 Hamza Kahveci — Tüm hakları saklıdır.</p>
-  </footer>
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
+  <script src="../assets/js/components.js"></script>
   <script src="../assets/js/jScript.js"></script>
   <script>
-    // =============================================
-    // CONTACT FORM VALIDATION
-    // =============================================
     (function () {
+      // ── EmailJS Başlat ──────────────────────────────────
+      emailjs.init('t-E42pdhUVTByy9zl');
+
+      const SERVICE_ID  = 'service_kcweezv';
+      const TEMPLATE_ID = 'template_hedxw4i';
+
       const nameInput    = document.getElementById('name');
       const emailInput   = document.getElementById('email');
       const subjectInput = document.getElementById('subject');
@@ -192,119 +127,106 @@
       const successBox   = document.getElementById('form-success');
       const formWrap     = document.getElementById('contact-form-wrap');
       const charCount    = document.getElementById('char-count');
-
       const MAX_MSG = 1000;
 
-      // ---- Karakter sayacı ----
       msgInput.addEventListener('input', () => {
         const len = msgInput.value.length;
         charCount.textContent = `${len} / ${MAX_MSG}`;
-        if (len > MAX_MSG) {
-          charCount.style.color = 'var(--accent)';
-        } else {
-          charCount.style.color = 'var(--muted)';
-        }
+        charCount.style.color = len > MAX_MSG ? 'var(--accent)' : 'var(--muted)';
       });
 
-      // ---- Yardımcı: hata göster ----
       function showError(input, errorId, msg) {
-        const errEl = document.getElementById(errorId);
+        document.getElementById(errorId).textContent = msg;
         input.classList.add('is-error');
         input.classList.remove('is-valid');
-        errEl.textContent = msg;
       }
 
-      // ---- Yardımcı: hatayı temizle ----
       function clearError(input, errorId) {
-        const errEl = document.getElementById(errorId);
+        document.getElementById(errorId).textContent = '';
         input.classList.remove('is-error');
         input.classList.add('is-valid');
-        errEl.textContent = '';
       }
 
-      // ---- E-posta regex ----
       function isValidEmail(val) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val.trim());
       }
 
-      // ---- Tek alan doğrula ----
       function validateField(input, errorId, rules) {
         const val = input.value.trim();
         for (const rule of rules) {
-          if (!rule.check(val)) {
-            showError(input, errorId, rule.msg);
-            return false;
-          }
+          if (!rule.check(val)) { showError(input, errorId, rule.msg); return false; }
         }
         clearError(input, errorId);
         return true;
       }
 
-      // ---- Alan kuralları ----
       const rules = {
-        name: [
-          { check: v => v.length > 0,   msg: 'Ad soyad alanı boş bırakılamaz.' },
-          { check: v => v.length >= 2,  msg: 'Ad soyad en az 2 karakter olmalıdır.' },
-          { check: v => v.length <= 60, msg: 'Ad soyad en fazla 60 karakter olabilir.' }
-        ],
-        email: [
-          { check: v => v.length > 0,    msg: 'E-posta alanı boş bırakılamaz.' },
-          { check: v => isValidEmail(v), msg: 'Geçerli bir e-posta adresi girin. (örn. ad@mail.com)' }
-        ],
-        subject: [
-          { check: v => v.length > 0,    msg: 'Konu alanı boş bırakılamaz.' },
-          { check: v => v.length >= 3,   msg: 'Konu en az 3 karakter olmalıdır.' },
-          { check: v => v.length <= 120, msg: 'Konu en fazla 120 karakter olabilir.' }
-        ],
-        message: [
-          { check: v => v.length > 0,        msg: 'Mesaj alanı boş bırakılamaz.' },
-          { check: v => v.length >= 10,       msg: 'Mesaj en az 10 karakter olmalıdır.' },
-          { check: v => v.length <= MAX_MSG,  msg: `Mesaj en fazla ${MAX_MSG} karakter olabilir.` }
-        ]
+        name:    [{ check: v => v.length > 0, msg: 'Ad soyad boş bırakılamaz.' },
+                  { check: v => v.length >= 2, msg: 'En az 2 karakter olmalıdır.' },
+                  { check: v => v.length <= 60, msg: 'En fazla 60 karakter olabilir.' }],
+        email:   [{ check: v => v.length > 0, msg: 'E-posta boş bırakılamaz.' },
+                  { check: v => isValidEmail(v), msg: 'Geçerli bir e-posta girin.' }],
+        subject: [{ check: v => v.length > 0, msg: 'Konu boş bırakılamaz.' },
+                  { check: v => v.length >= 3, msg: 'En az 3 karakter olmalıdır.' },
+                  { check: v => v.length <= 120, msg: 'En fazla 120 karakter olabilir.' }],
+        message: [{ check: v => v.length > 0, msg: 'Mesaj boş bırakılamaz.' },
+                  { check: v => v.length >= 10, msg: 'En az 10 karakter olmalıdır.' },
+                  { check: v => v.length <= MAX_MSG, msg: `En fazla ${MAX_MSG} karakter olabilir.` }]
       };
 
-      // ---- Anlık doğrulama (blur) ----
       nameInput.addEventListener('blur',    () => validateField(nameInput,    'name-error',    rules.name));
       emailInput.addEventListener('blur',   () => validateField(emailInput,   'email-error',   rules.email));
       subjectInput.addEventListener('blur', () => validateField(subjectInput, 'subject-error', rules.subject));
       msgInput.addEventListener('blur',     () => validateField(msgInput,     'message-error', rules.message));
 
-      // Hata durumundaki alanlarda yazmaya başlayınca hatayı temizle
       [nameInput, emailInput, subjectInput, msgInput].forEach(inp => {
         inp.addEventListener('input', () => {
           if (inp.classList.contains('is-error')) {
             inp.classList.remove('is-error');
-            const errId = inp.id + '-error';
-            const errEl = document.getElementById(errId);
+            const errEl = document.getElementById(inp.id + '-error');
             if (errEl) errEl.textContent = '';
           }
         });
       });
 
-      // ---- Form gönderim ----
-      submitBtn.addEventListener('click', () => {
+      submitBtn.addEventListener('click', async () => {
         const v1 = validateField(nameInput,    'name-error',    rules.name);
         const v2 = validateField(emailInput,   'email-error',   rules.email);
         const v3 = validateField(subjectInput, 'subject-error', rules.subject);
         const v4 = validateField(msgInput,     'message-error', rules.message);
 
         if (!v1 || !v2 || !v3 || !v4) {
-          // İlk hatalı alana odaklan
-          const firstErr = [nameInput, emailInput, subjectInput, msgInput]
-            .find(inp => inp.classList.contains('is-error'));
-          if (firstErr) firstErr.focus();
+          [nameInput, emailInput, subjectInput, msgInput]
+            .find(inp => inp.classList.contains('is-error'))?.focus();
           return;
         }
 
-        // Başarılı gönderim — gerçek backend olmadığı için simüle edildi
+        // Gönderiliyor durumu
         submitBtn.disabled = true;
         submitBtn.textContent = 'Gönderiliyor...';
 
-        setTimeout(() => {
+        // EmailJS'e gönder — template değişken isimleri şunlar:
+        // {{from_name}}, {{from_email}}, {{subject}}, {{message}}
+        const templateParams = {
+          from_name:  nameInput.value.trim(),
+          from_email: emailInput.value.trim(),
+          subject:    subjectInput.value.trim(),
+          message:    msgInput.value.trim()
+        };
+
+        try {
+          await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams);
+          // Başarılı
           formWrap.style.display = 'none';
           successBox.classList.add('visible');
           successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 800);
+        } catch (error) {
+          // Hata durumu
+          console.error('EmailJS hatası:', error);
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Gönder →';
+          alert('Mesaj gönderilemedi. Lütfen tekrar deneyin veya direkt e-posta ile ulaşın.');
+        }
       });
     })();
   </script>
